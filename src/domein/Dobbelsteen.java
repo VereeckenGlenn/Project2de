@@ -7,14 +7,14 @@ public class Dobbelsteen {
     private int geroldeOgen;
 
     public Dobbelsteen() {
-
+        
     }
 
     public int getGeroldeOgen() {
         return this.geroldeOgen;
     }
 
-    private void rolDobbelsteen() {
+    public void rolDobbelsteen() {
         SecureRandom sr = new SecureRandom();
         this.geroldeOgen = (sr.nextInt(6) + 1);
     }
