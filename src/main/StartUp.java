@@ -1,13 +1,14 @@
 package main;
 
-import domein.Speler;
+import domein.DomeinController;
+import ui.Regenworm;
 
 public class StartUp {
 
     public static void main(String[] args) {
-        Speler sp1 = new Speler();
-        
-        System.out.println(sp1.toonDobbelstenen());
+        DomeinController dc = new DomeinController();
+
+        new Regenworm().start();
     }
-    
+
 }

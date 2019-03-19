@@ -14,6 +14,11 @@ import java.util.ArrayList;
 public class DomeinController {
 
     ArrayList tegelArrayList = new ArrayList();
+    private Speler speler;
+
+    public DomeinController() {
+        this.speler = new Speler();
+    }
 
     public void maakTegels() {
         int aantalWormen;
@@ -32,10 +37,15 @@ public class DomeinController {
                     }
                 }
             }
-            Tegel tegel = new Tegel(nummer,aantalWormen);
+            Tegel tegel = new Tegel(nummer, aantalWormen);
             tegelArrayList.add(tegel);
         }
 
     }
 
+    public void DCvergelijkGekozenGetalMetArrayDobbelstenen(int gekozenGetal) {
+        speler.vergelijkGekozenGetalMetArrayDobbelstenen(gekozenGetal);
+    }
+    
+    
 }
