@@ -9,6 +9,7 @@ public class Regenworm {
     Scanner input = new Scanner(System.in);
 
     public void start() {
+        
         dc.stelDobbelstenenArrayIn();
         System.out.println("Je rolde: ");
         System.out.println(dc.getDobbelstenenString());
@@ -16,7 +17,10 @@ public class Regenworm {
         System.out.print("Geef het getal in dat je wil nemen (6 voor regenworm): ");
         int gekozenGetal = input.nextInt();
         int score = dc.berekenScore(gekozenGetal);
-        System.out.printf("%d",score);
+        System.out.printf("de score is %d%n",score);
+        dc.voegScoreSpelerToeAanTotaalScore(score);
+        System.out.println(dc.getTotaalScore());
+        
     }
     
 }

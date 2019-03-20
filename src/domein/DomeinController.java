@@ -57,5 +57,15 @@ public class DomeinController {
     
     public String getDobbelstenenString(){
         return speler.getDobbelstenenString();
+    }    
+    
+    public void voegScoreSpelerToeAanTotaalScore(int scoreBeurt){
+        speler.voegScoreSpelerToeAanTotaalScore(scoreBeurt);
+    }
+    public int getTotaalScore(){
+        return speler.getTotaalScore();
+    }
+    public int getAantalDobelstenen(){
+        return speler.getAantalDobbelstenen();
     }
 }
