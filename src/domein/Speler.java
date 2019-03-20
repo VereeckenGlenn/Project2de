@@ -5,12 +5,12 @@ import java.util.ArrayList;
 public class Speler {
 
     private String naam;
-    private int score =0;
+    private int score = 0;
     private int aantalDobbelstenen = 8;
     private String geroldeDobbelstenen;
     private int totaalScore;
     private boolean eindeBeurt = false;
-    
+
     ArrayList dobbelstenenArrayList = new ArrayList();
     ArrayList gekozenGetallen = new ArrayList();
 
@@ -52,20 +52,21 @@ public class Speler {
         }
         return gekozenGetalMatchtDobbelsteenOog;
     }
-    public boolean zitGekozenGetalInGekozenGetallenArrayList(int gekozenGetal){
+
+    public boolean zitGekozenGetalInGekozenGetallenArrayList(int gekozenGetal) {
         boolean checkGekozen = false;
         for (Object getal : gekozenGetallen) {
-          if(getal.equals(gekozenGetal)){
-             checkGekozen= true; 
-          }
+            if (getal.equals(gekozenGetal)) {
+                checkGekozen = true;
+            }
         }
         return checkGekozen;
     }
-    
+
     public int getTotaalScore() {
         return totaalScore;
     }
-    
+
     public int getScore() {
         return score;
     }
@@ -73,20 +74,20 @@ public class Speler {
     public void voegScoreSpelerToeAanTotaalScore(int scoreBeurt) {
         totaalScore += scoreBeurt;
     }
-    
-    public int berekenScore(int gekozenGetal){
+
+    public int berekenScore(int gekozenGetal) {
         int aantalKeer = 0;
-        for (Object dobbelsteen :dobbelstenenArrayList ) {
-           if(dobbelsteen.equals(gekozenGetal)){
-              aantalKeer++; 
-           
+        for (Object dobbelsteen : dobbelstenenArrayList) {
+            if (dobbelsteen.equals(gekozenGetal)) {
+                aantalKeer++;
+
+            }
         }
+        if (gekozenGetal == 6) {
+            gekozenGetal = 5;
         }
-        if(gekozenGetal==6){
-            gekozenGetal=5;
-        }
-        aantalDobbelstenen-=aantalKeer;
-        score = aantalKeer*gekozenGetal;
+        aantalDobbelstenen -= aantalKeer;
+        score = aantalKeer * gekozenGetal;
         return score;
     }
 
@@ -102,17 +103,36 @@ public class Speler {
         return aantalDobbelstenen;
     }
 
-    public boolean checkOfEindeSpel(int guard, int gekozenGetal){
-        if(aantalDobbelstenen == 0 || zitGekozenGetalInGekozenGetallenArrayList(gekozenGetal)){
-            eindeBeurt= true;
+    public boolean checkOfEindeSpel(int guard, int gekozenGetal) {
+        if (aantalDobbelstenen == 0 || zijnWaardenVanDobbelsteenArrayListEnGekozenGetallenHetzelfde()) {
+            eindeBeurt = true;
         }
-       if(totaalScore>21){
-           if(guard == 1){
-               eindeBeurt = true;
-           }
-       }
-            return eindeBeurt;
+        if (totaalScore > 21) {
+            if (guard == 1) {
+                eindeBeurt = true;
+            }
+        }
+        if (eindeBeurt) {
+            gekozenGetallen.clear();
+        }
+        return eindeBeurt;
     }
     
-    
+        public boolean zijnWaardenVanDobbelsteenArrayListEnGekozenGetallenHetzelfde() {
+        int nietGelijkCounter = aantalDobbelstenen;
+        for (Object dobbelsteen : dobbelstenenArrayList) {
+            for (Object getal : gekozenGetallen) {
+                if (getal == dobbelsteen) {
+                    nietGelijkCounter--;
+                }
+            }
+        }
+
+        if (!gekozenGetallen.isEmpty()) {
+            if (nietGelijkCounter == 0) {
+                return true;
+            }
+        }
+        return false;
+    }
 }

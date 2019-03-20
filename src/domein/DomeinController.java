@@ -67,5 +67,13 @@ public class DomeinController {
     }
     public int getAantalDobelstenen(){
         return speler.getAantalDobbelstenen();
-    }
+    }    
+    public boolean checkOfEindeSpel(int guard, int gekozenGetal){
+       return speler.checkOfEindeSpel(guard, gekozenGetal);
+   }
+
+   public boolean vergelijkGekozenGetalMetArrayDobbelstenen(int gekozenGetal) {
+       return speler.vergelijkGekozenGetalMetArrayDobbelstenen(gekozenGetal);
+   }
+
 }
