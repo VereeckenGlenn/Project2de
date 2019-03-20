@@ -47,5 +47,15 @@ public class DomeinController {
         speler.vergelijkGekozenGetalMetArrayDobbelstenen(gekozenGetal);
     }
     
+    public int berekenScore(int gekozenGetal){
+      return speler.berekenScore(gekozenGetal);
+    }
     
+    public void stelDobbelstenenArrayIn(){
+        speler.stelDobbelstenenArrayIn();
+    }
+    
+    public String getDobbelstenenString(){
+        return speler.getDobbelstenenString();
+    }
 }

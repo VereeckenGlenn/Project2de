@@ -7,7 +7,6 @@ public class Speler {
     private String naam;
     private int score;
     private int aantalDobbelstenen = 8;
-    private int gekozenAantal = 0;
     private String geroldeDobbelstenen;
     private int scoreSpeler = 0;
     ArrayList dobbelstenenArrayList = new ArrayList();
@@ -35,7 +34,7 @@ public class Speler {
         return geroldeDobbelstenen;
     }
 
-    public void vergelijkGekozenGetalMetArrayDobbelstenen(int gekozenGetal) {
+    public boolean vergelijkGekozenGetalMetArrayDobbelstenen(int gekozenGetal) {
         boolean gekozenGetalMatchtDobbelsteenOog = false;
         while (!gekozenGetalMatchtDobbelsteenOog) {
             for (Object dobbelsteen : dobbelstenenArrayList) {
@@ -48,6 +47,7 @@ public class Speler {
                 throw new IllegalArgumentException("Je gekozen getal matcht niet met de gerolde dobbelstenen!");
             }
         }
+        return gekozenGetalMatchtDobbelsteenOog;
     }
 
     public int toonScoreSpeler() {
@@ -56,6 +56,23 @@ public class Speler {
 
     public void voegScoreSpelerToe(int scoreBeurt) {
         scoreSpeler += scoreBeurt;
+    }
+    
+    public int berekenScore(int gekozenGetal){
+        int aantalKeer = 0;
+       if(this.vergelijkGekozenGetalMetArrayDobbelstenen(gekozenGetal)==true){
+              aantalKeer++; 
+           
+        }
+        if(gekozenGetal==6){
+            gekozenGetal=5;
+        }
+        aantalDobbelstenen-=aantalKeer;
+        return aantalKeer*gekozenGetal;
+    }
+
+    public void setNaam(String naam) {
+        this.naam = naam;
     }
     
     
