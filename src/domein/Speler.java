@@ -104,7 +104,7 @@ public class Speler {
     }
 
     public boolean checkOfEindeSpel(int guard, int gekozenGetal) {
-        if (aantalDobbelstenen == 0 || zijnWaardenVanDobbelsteenArrayListEnGekozenGetallenHetzelfde()) {
+        if (aantalDobbelstenen == 0 || zijnWaardenHetzelfde()) {
             eindeBeurt = true;
         }
         if (totaalScore > 21) {
@@ -118,7 +118,7 @@ public class Speler {
         return eindeBeurt;
     }
     
-        public boolean zijnWaardenVanDobbelsteenArrayListEnGekozenGetallenHetzelfde() {
+        public boolean zijnWaardenHetzelfde() {
         int nietGelijkCounter = aantalDobbelstenen;
         for (Object dobbelsteen : dobbelstenenArrayList) {
             for (Object getal : gekozenGetallen) {
@@ -135,4 +135,4 @@ public class Speler {
         }
         return false;
     }
-}
+} 
