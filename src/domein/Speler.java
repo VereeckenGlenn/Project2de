@@ -10,9 +10,11 @@ public class Speler {
     private String geroldeDobbelstenen;
     private int totaalScore;
     private boolean eindeBeurt = false;
+    private int aantalKeer = 0;
+    private int leeftijd = 0;
 
-    ArrayList dobbelstenenArrayList = new ArrayList();
-    ArrayList gekozenGetallen = new ArrayList();
+    ArrayList dobbelstenenArrayList = new ArrayList<>();
+    ArrayList gekozenGetallen = new ArrayList<>();
 
     public void stelDobbelstenenArrayIn() {
         geroldeDobbelstenen = "";
@@ -42,27 +44,28 @@ public class Speler {
         while (!gekozenGetalMatchtDobbelsteenOog) {
             for (Object dobbelsteen : dobbelstenenArrayList) {
                 if (dobbelsteen.equals(gekozenGetal)) {
-                    gekozenGetalMatchtDobbelsteenOog = true;
-                    gekozenGetallen.add(gekozenGetal);
-                }
-            }
+                   gekozenGetalMatchtDobbelsteenOog = true;}
+                    }
+                
+            } 
+         if(gekozenGetalMatchtDobbelsteenOog){      
+        if(!gekozenGetallen.contains(gekozenGetal)){
+                     gekozenGetallen.add(gekozenGetal);
+                    }else{
+                        throw new IllegalArgumentException("Het gekozen getal is al is gekozen.");}}
+        
             if (!gekozenGetalMatchtDobbelsteenOog) {
                 throw new IllegalArgumentException("Je gekozen getal matcht niet met de gerolde dobbelstenen!");
             }
-        }
+        
         return gekozenGetalMatchtDobbelsteenOog;
     }
 
-    public boolean zitGekozenGetalInGekozenGetallenArrayList(int gekozenGetal) {
-        boolean checkGekozen = false;
-        for (Object getal : gekozenGetallen) {
-            if (getal.equals(gekozenGetal)) {
-                checkGekozen = true;
-            }
-        }
-        return checkGekozen;
+    public void setLeeftijd(int leeftijd) {
+        this.leeftijd = leeftijd;
     }
 
+    
     public int getTotaalScore() {
         return totaalScore;
     }
@@ -71,12 +74,17 @@ public class Speler {
         return score;
     }
 
+    public int getLeeftijd() {
+        return leeftijd;
+    }
+    
+
     public void voegScoreSpelerToeAanTotaalScore(int scoreBeurt) {
         totaalScore += scoreBeurt;
     }
 
     public int berekenScore(int gekozenGetal) {
-        int aantalKeer = 0;
+      aantalKeer=0;
         for (Object dobbelsteen : dobbelstenenArrayList) {
             if (dobbelsteen.equals(gekozenGetal)) {
                 aantalKeer++;
@@ -86,7 +94,6 @@ public class Speler {
         if (gekozenGetal == 6) {
             gekozenGetal = 5;
         }
-        aantalDobbelstenen -= aantalKeer;
         score = aantalKeer * gekozenGetal;
         return score;
     }
@@ -120,6 +127,7 @@ public class Speler {
     
         public boolean zijnWaardenHetzelfde() {
         int nietGelijkCounter = aantalDobbelstenen;
+        aantalDobbelstenen-= aantalKeer;
         for (Object dobbelsteen : dobbelstenenArrayList) {
             for (Object getal : gekozenGetallen) {
                 if (getal == dobbelsteen) {

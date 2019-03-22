@@ -1,6 +1,7 @@
 package ui;
 
 import domein.DomeinController;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Regenworm {
@@ -9,29 +10,62 @@ public class Regenworm {
     Scanner input = new Scanner(System.in);
 
     public void start() {
-     boolean eindSpelChecker = false;
-     boolean vergelijkChecker = false;  
-     
-        while(!eindSpelChecker){
-        dc.stelDobbelstenenArrayIn();
-        System.out.println("Je rolde: ");
-        System.out.println(dc.getDobbelstenenString());
+
+        dc.maakTegels();
+
+        System.out.println("Geef het aantal spelers in.");
+        int aantalSpelers = input.nextInt();
+        String[] namen = new String[aantalSpelers];
+        int[] leeftijden = new int[aantalSpelers];
+        for (int i = 0; i < namen.length; i++) {
+            System.out.printf("geef de naam voor speler %d: ", i);
+            namen[i] = input.next();
+            System.out.printf("geef de leeftijd in voor speler %d:", i);
+            leeftijden[i] = input.nextInt();
+        }
+        dc.maakSpelers(aantalSpelers, namen, leeftijden);
+        ArrayList spelerLijst = dc.getSpelerLijst();
         
-        System.out.print("Geef het getal in dat je wil nemen (6 voor regenworm): ");
-        while (!vergelijkChecker){  
-        int gekozenGetal = input.nextInt();
-        vergelijkChecker = dc.vergelijkGekozenGetalMetArrayDobbelstenen(gekozenGetal);                
-        if(vergelijkChecker){
-        int score = dc.berekenScore(gekozenGetal);
-        System.out.printf("de score is %d%n",score);
-        dc.voegScoreSpelerToeAanTotaalScore(score);
-        System.out.println(dc.getTotaalScore());
-        eindSpelChecker =dc.checkOfEindeSpel(score, gekozenGetal);
-        }else{
-            System.out.println("het getal is al gekozen,geef een nieuw getal in.");
-        }} 
-        
-        } 
+        while (!dc.isEindeSpel()) {
+            for (Object spelers : spelerLijst) {
+                boolean eindBeurtChecker = false;
+                System.out.printf("het is %s's beurt%n", dc.getNaam());
+
+                while (!eindBeurtChecker) {
+                    dc.stelDobbelstenenArrayIn();
+                    System.out.println("Je rolde: ");
+                    System.out.println(dc.getDobbelstenenString());
+
+                    System.out.print("Geef het getal in dat je wil nemen (6 voor regenworm): ");
+                    boolean vergelijkChecker = false;
+                    int gekozenGetal = input.nextInt();
+                    while (!vergelijkChecker) {
+                        vergelijkChecker = dc.vergelijkGekozenGetalMetArrayDobbelstenen(gekozenGetal);
+                        if (vergelijkChecker) {
+                            int score = dc.berekenScore(gekozenGetal);
+                            System.out.printf("de score is %d%n", score);
+                            dc.voegScoreSpelerToeAanTotaalScore(score);
+                            System.out.println(dc.getTotaalScore());
+                            int guard = 2;
+                            if (dc.getTotaalScore() >= 21) {
+                                System.out.println("Wenst u te stoppen? geef 1 in voor ja, een ander getal voor nee.");
+                                guard = input.nextInt();
+                            }
+                            eindBeurtChecker = dc.checkOfEindeSpel(guard, gekozenGetal);
+                        } else {
+                            System.out.println("het getal is al gekozen,geef een nieuw getal in.");
+                            gekozenGetal = input.nextInt();
+                        }
+                    }
+                    if (eindBeurtChecker) {
+                        System.out.println("dc.toonTegels(dc.getTotaalScore())");
+                        System.out.println("geef het getal in van de tegel die je wil nemen.");
+                        int gekozenTegel = input.nextInt();
+                        dc.kiesTegel(gekozenTegel);
+                        dc.isEindeSpel();
+                    }
+                }
+            }
+        }
     }
-    
 }

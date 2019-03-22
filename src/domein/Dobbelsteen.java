@@ -6,9 +6,6 @@ public class Dobbelsteen {
 
     private int geroldeOgen;
 
-    public Dobbelsteen() {
-        
-    }
 
     public int getGeroldeOgen() {
         return this.geroldeOgen;
