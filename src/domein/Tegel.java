@@ -11,10 +11,10 @@ package domein;
  */
 public class Tegel {
 
-    public int nummer;
-    public int aantalWormen;
+    private int nummer;
+    private int aantalWormen;
 
-    public Tegel(int nummer, int aantalWormen) {
+    public Tegel(int nummer, int aantalWormen ) {
         setNummer(nummer);
         setAantalWormen(aantalWormen);
     }
@@ -23,9 +23,6 @@ public class Tegel {
         return nummer;
     }
 
-    public int getAantalWormen() {
-        return aantalWormen;
-    }
 
     public final void setNummer(int nummer) {
         if (nummer >= 21 && nummer <= 36) {
@@ -35,12 +32,13 @@ public class Tegel {
         }
     }
 
-    public final void setAantalWormen(int aantalWormen) {
-        if (aantalWormen >= 1 && aantalWormen <= 4) {
-            this.aantalWormen = aantalWormen;
-        } else {
-            throw new IllegalArgumentException("Het aantal wormen moet tussen 1 en 4 liggen.");
-        }
+    public int getAantalWormen() {
+        return aantalWormen;
     }
+
+    public void setAantalWormen(int aantalWormen) {
+        this.aantalWormen = aantalWormen;
+    }
+
 
 }

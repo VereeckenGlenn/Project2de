@@ -18,18 +18,19 @@ public class Regenworm {
         String[] namen = new String[aantalSpelers];
         int[] leeftijden = new int[aantalSpelers];
         for (int i = 0; i < namen.length; i++) {
-            System.out.printf("geef de naam voor speler %d: ", i);
+            System.out.printf("geef de naam voor speler %d: ", i+1);
             namen[i] = input.next();
-            System.out.printf("geef de leeftijd in voor speler %d:", i);
+            System.out.printf("geef de leeftijd in voor speler %d:", i+1);
             leeftijden[i] = input.nextInt();
         }
         dc.maakSpelers(aantalSpelers, namen, leeftijden);
         ArrayList spelerLijst = dc.getSpelerLijst();
         
+        
         while (!dc.isEindeSpel()) {
-            for (Object spelers : spelerLijst) {
+            for (int i = 0; i < namen.length; i++) {
                 boolean eindBeurtChecker = false;
-                System.out.printf("het is %s's beurt%n", dc.getNaam());
+                System.out.printf("het is %s's beurt%n", dc.getNaam(i));
 
                 while (!eindBeurtChecker) {
                     dc.stelDobbelstenenArrayIn();
@@ -58,7 +59,7 @@ public class Regenworm {
                         }
                     }
                     if (eindBeurtChecker) {
-                        System.out.println("dc.toonTegels(dc.getTotaalScore())");
+                        System.out.println(dc.toonTegels(dc.getTotaalScore()).toString());
                         System.out.println("geef het getal in van de tegel die je wil nemen.");
                         int gekozenTegel = input.nextInt();
                         dc.kiesTegel(gekozenTegel);
