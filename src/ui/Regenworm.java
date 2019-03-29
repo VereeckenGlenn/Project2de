@@ -1,7 +1,9 @@
 package ui;
 
 import domein.DomeinController;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Scanner;
 
 public class Regenworm {
@@ -16,17 +18,21 @@ public class Regenworm {
         System.out.println("Geef het aantal spelers in.");
         int aantalSpelers = input.nextInt();
         String[] namen = new String[aantalSpelers];
-        int[] leeftijden = new int[aantalSpelers];
+        Date[] leeftijden = new Date[aantalSpelers];
         for (int i = 0; i < namen.length; i++) {
-            System.out.printf("geef de naam voor speler %d: ", i+1);
+            System.out.printf("geef de naam voor speler %d: ", i + 1);
             namen[i] = input.next();
-            System.out.printf("geef de leeftijd in voor speler %d:", i+1);
-            leeftijden[i] = input.nextInt();
+            System.out.printf("geef de geboortedatum in voor speler %d, dd-mm-yyyy:", i + 1);
+            String date = input.nextLine();
+
+            SimpleDateFormat format = new SimpleDateFormat("dd - mm - yyyy");
+
+            format.parse(date);
+
         }
         dc.maakSpelers(aantalSpelers, namen, leeftijden);
         ArrayList spelerLijst = dc.getSpelerLijst();
-        
-        
+
         while (!dc.isEindeSpel()) {
             for (int i = 0; i < namen.length; i++) {
                 boolean eindBeurtChecker = false;

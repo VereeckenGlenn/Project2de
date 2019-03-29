@@ -1,6 +1,7 @@
 package domein;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 public class Speler {
 
@@ -11,7 +12,7 @@ public class Speler {
     private int totaalScore;
     private boolean eindeBeurt = false;
     private int aantalKeer = 0;
-    private int leeftijd = 0;
+    private Date geboorteDatum;
 
     ArrayList dobbelstenenArrayList = new ArrayList<>();
     ArrayList gekozenGetallen = new ArrayList<>();
@@ -61,8 +62,8 @@ public class Speler {
         return gekozenGetalMatchtDobbelsteenOog;
     }
 
-    public void setLeeftijd(int leeftijd) {
-        this.leeftijd = leeftijd;
+    public void setGeboorteDatum(Date geboorteDatum) {
+        this.geboorteDatum = geboorteDatum;
     }
 
     
@@ -74,8 +75,8 @@ public class Speler {
         return score;
     }
 
-    public int getLeeftijd() {
-        return leeftijd;
+    public Date getGeboorteDatum() {
+        return geboorteDatum;
     }
     
 

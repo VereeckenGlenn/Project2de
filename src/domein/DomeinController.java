@@ -7,6 +7,7 @@ package domein;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -25,11 +26,11 @@ public class DomeinController {
         this.speler = new Speler();
     }
 
-    public void maakSpelers(int aantal, String[] namen, int[] leeftijden) {
+    public void maakSpelers(int aantal, String[] namen, Date[] leeftijden) {
         for (int i = 0; i < aantal; i++) {
             Speler player = new Speler();
             player.setNaam(namen[i]);
-            player.setLeeftijd(leeftijden[i]);
+            player.setGeboorteDatum(leeftijden[i]);
             spelerLijst.add(player);
         }
     }
@@ -48,8 +49,8 @@ public class DomeinController {
                 return s.getNaam();
     }
 
-    public int getLeeftijd() {
-        return speler.getLeeftijd();
+    public Date getGeboorteDatum() {
+        return speler.getGeboorteDatum();
     }
 /**
     public void maakTegels() {
@@ -119,8 +120,7 @@ public class DomeinController {
                 }
             }
         }
-        Tegel t = (Tegel) tegelArrayList.get(score);
-        return ;
+        return kiesbareTegels ;
     }
     
     public int kiesTegel(int gekozenTegel){
