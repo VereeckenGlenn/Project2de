@@ -7,7 +7,7 @@ package domein;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 /**
@@ -21,19 +21,55 @@ public class DomeinController {
     private Speler speler;
     ArrayList kiesbareTegels = new ArrayList<>();
     ArrayList spelerLijst = new ArrayList<Speler>();
+    ArrayList gesorteerdeSpelerLijst = new ArrayList<Speler>();
 
     public DomeinController() {
         this.speler = new Speler();
     }
 
-    public void maakSpelers(int aantal, String[] namen, Date[] leeftijden) {
+    public void maakSpelers(int aantal, String[] namen, LocalDate[] geboorteDatums, LocalDate huidigeDatum) {
         for (int i = 0; i < aantal; i++) {
             Speler player = new Speler();
             player.setNaam(namen[i]);
-            player.setGeboorteDatum(leeftijden[i]);
+            player.setGeboorteDatum(geboorteDatums[i]);
             spelerLijst.add(player);
+            this.SorteerSpelersOpGeboorteDatum(aantal,huidigeDatum);
         }
     }
+    public void SorteerSpelersOpGeboorteDatum(int aantal, LocalDate huidigeDatum){
+        int[] leeftijden = new int[aantal];
+        for (Object speler : spelerLijst) {
+            int i=0;
+            Speler s = (Speler) speler;
+            leeftijden[i] = s.berekenLeeftijd(this.getGeboorteDatum(), huidigeDatum);
+            i++;
+        }
+        for (int i = leeftijden.length-1; i > 1; i--) {
+         int positie = i;
+         int max = leeftijden[i];
+         for(int j=i-1; i>0; i--){
+             if(leeftijden[j]>max){
+                 positie =j;
+                 max = leeftijden[j];
+             }
+         }
+         leeftijden[positie] = leeftijden[i];
+         leeftijden[i] = max;
+        }
+        for (Object speler : spelerLijst) {
+            for (int i = 0; i < leeftijden.length-1; i++) { 
+            Speler s = (Speler) speler;
+            if(s.berekenLeeftijd(huidigeDatum, huidigeDatum)==leeftijden[i]){
+                gesorteerdeSpelerLijst.add(s);
+                }
+            }
+        }
+    }
+
+    public ArrayList getGesorteerdeSpelerLijst() {
+        return gesorteerdeSpelerLijst;
+    }
+    
 
     public ArrayList getSpelerLijst() {
         return spelerLijst;
@@ -49,9 +85,10 @@ public class DomeinController {
                 return s.getNaam();
     }
 
-    public Date getGeboorteDatum() {
+    public LocalDate getGeboorteDatum() {
         return speler.getGeboorteDatum();
     }
+   
 /**
     public void maakTegels() {
         for (int a = 21; a <= 36; a++) {

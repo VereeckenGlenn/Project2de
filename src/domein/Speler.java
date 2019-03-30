@@ -1,7 +1,8 @@
 package domein;
 
+import java.time.LocalDate;
+import java.time.Period;
 import java.util.ArrayList;
-import java.util.Date;
 
 public class Speler {
 
@@ -12,7 +13,7 @@ public class Speler {
     private int totaalScore;
     private boolean eindeBeurt = false;
     private int aantalKeer = 0;
-    private Date geboorteDatum;
+    private LocalDate geboorteDatum;
 
     ArrayList dobbelstenenArrayList = new ArrayList<>();
     ArrayList gekozenGetallen = new ArrayList<>();
@@ -30,6 +31,12 @@ public class Speler {
                 geroldeDobbelstenen += dobbelsteen.getGeroldeOgen() + " ";
             }
         }
+    }
+    public int berekenLeeftijd(LocalDate geboorteDatum, LocalDate huidigeDatum){
+        if((geboorteDatum != null)&&(huidigeDatum != null)){
+            return Period.between(geboorteDatum,huidigeDatum).getYears();
+        }
+        return 0;
     }
 
     public ArrayList getDobbelstenenArray() {
@@ -62,7 +69,7 @@ public class Speler {
         return gekozenGetalMatchtDobbelsteenOog;
     }
 
-    public void setGeboorteDatum(Date geboorteDatum) {
+    public void setGeboorteDatum(LocalDate geboorteDatum) {
         this.geboorteDatum = geboorteDatum;
     }
 
@@ -75,7 +82,7 @@ public class Speler {
         return score;
     }
 
-    public Date getGeboorteDatum() {
+    public LocalDate getGeboorteDatum() {
         return geboorteDatum;
     }
     
