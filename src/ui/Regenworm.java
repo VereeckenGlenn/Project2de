@@ -4,6 +4,7 @@ import domein.DomeinController;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class Regenworm {
@@ -14,14 +15,30 @@ public class Regenworm {
     public void start() {
 
         dc.maakTegels();
+        int aantalSpelers = 0;
+        boolean exceptionGegooid = false;
 
-        System.out.println("Geef het aantal spelers in.");
-        int aantalSpelers = input.nextInt();
+        do {
+            try {
+                System.out.println("Geef het aantal spelers in.");
+
+                aantalSpelers = input.nextInt();
+                if (aantalSpelers < 2 || aantalSpelers > 7) {
+                    throw new IllegalArgumentException();
+                }
+                exceptionGegooid = false;
+            } catch (InputMismatchException | IllegalArgumentException e) {
+                System.out.println("Het aantal spelers ligt niet tussen 2 en 7");
+                exceptionGegooid = true;
+                input.next();
+            }
+        } while (exceptionGegooid);
         String[] namen = new String[aantalSpelers];
         Date[] leeftijden = new Date[aantalSpelers];
         for (int i = 0; i < namen.length; i++) {
             System.out.printf("geef de naam voor speler %d: ", i + 1);
             namen[i] = input.next();
+
             System.out.printf("geef de geboortedatum in voor speler %d, dd-mm-yyyy:", i + 1);
             String date = input.nextLine();
 
