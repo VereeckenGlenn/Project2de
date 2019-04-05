@@ -129,6 +129,8 @@ public class Speler {
         }
         if (eindeBeurt) {
             gekozenGetallen.clear();
+            aantalDobbelstenen=8;
+            totaalScore=0;
         }
         return eindeBeurt;
     }

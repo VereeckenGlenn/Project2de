@@ -1,9 +1,12 @@
 package ui;
 
 import domein.DomeinController;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
@@ -20,7 +23,7 @@ public class Regenworm {
 
         do {
             try {
-                System.out.println("Geef het aantal spelers in.");
+                System.out.print("Geef het aantal spelers in: ");
 
                 aantalSpelers = input.nextInt();
                 if (aantalSpelers < 2 || aantalSpelers > 7) {
@@ -34,20 +37,33 @@ public class Regenworm {
             }
         } while (exceptionGegooid);
         String[] namen = new String[aantalSpelers];
-        Date[] leeftijden = new Date[aantalSpelers];
+        LocalDate[] leeftijden = new LocalDate[aantalSpelers];
         for (int i = 0; i < namen.length; i++) {
+
             System.out.printf("geef de naam voor speler %d: ", i + 1);
             namen[i] = input.next();
+            do {
 
-            System.out.printf("geef de geboortedatum in voor speler %d, dd-mm-yyyy:", i + 1);
-            String date = input.nextLine();
+                System.out.printf("geef de geboortedatum in voor speler %d, dd-mm-yyyy:", i + 1);
+                String date = input.next();
 
-            SimpleDateFormat format = new SimpleDateFormat("dd - mm - yyyy");
+                SimpleDateFormat format = new SimpleDateFormat("dd-mm-yyyy");
 
-            format.parse(date);
+                Date dateRaw = null;
+                try {
+                    dateRaw = format.parse(date);
+                    exceptionGegooid = false;
+
+                    LocalDate dateConverted = LocalDate.ofInstant(dateRaw.toInstant(), ZoneId.systemDefault());
+                    leeftijden[i] = dateConverted;
+                } catch (ParseException ex) {
+                    System.out.println("De ingegeven datum klopt niet. Probeer het opnieuw.");
+                    exceptionGegooid = true;
+                }
+            } while (exceptionGegooid);
 
         }
-        dc.maakSpelers(aantalSpelers, namen, leeftijden);
+        dc.maakSpelers(aantalSpelers, namen, leeftijden, LocalDate.now());
         ArrayList spelerLijst = dc.getSpelerLijst();
 
         while (!dc.isEindeSpel()) {
@@ -67,23 +83,23 @@ public class Regenworm {
                         vergelijkChecker = dc.vergelijkGekozenGetalMetArrayDobbelstenen(gekozenGetal);
                         if (vergelijkChecker) {
                             int score = dc.berekenScore(gekozenGetal);
-                            System.out.printf("de score is %d%n", score);
+                            System.out.printf("De score van deze worp is %d%n", score);
                             dc.voegScoreSpelerToeAanTotaalScore(score);
-                            System.out.println(dc.getTotaalScore());
+                            System.out.printf("Je totaal score bedraagt nu: %d%n", dc.getTotaalScore());
                             int guard = 2;
                             if (dc.getTotaalScore() >= 21) {
-                                System.out.println("Wenst u te stoppen? geef 1 in voor ja, een ander getal voor nee.");
+                                System.out.print("Wenst u te stoppen? Geef 1 in voor ja, een ander getal voor nee: ");
                                 guard = input.nextInt();
                             }
                             eindBeurtChecker = dc.checkOfEindeSpel(guard, gekozenGetal);
                         } else {
-                            System.out.println("het getal is al gekozen,geef een nieuw getal in.");
+                            System.out.println("Het getal is al gekozen, geef een nieuw getal in: ");
                             gekozenGetal = input.nextInt();
                         }
                     }
                     if (eindBeurtChecker) {
                         System.out.println(dc.toonTegels(dc.getTotaalScore()).toString());
-                        System.out.println("geef het getal in van de tegel die je wil nemen.");
+                        System.out.print("Geef het getal in van de tegel die je wil nemen: ");
                         int gekozenTegel = input.nextInt();
                         dc.kiesTegel(gekozenTegel);
                         dc.isEindeSpel();

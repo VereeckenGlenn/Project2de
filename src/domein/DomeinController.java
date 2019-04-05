@@ -6,9 +6,8 @@
 package domein;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.time.LocalDate;
-import java.util.List;
+
 
 /**
  *
@@ -151,8 +150,9 @@ public class DomeinController {
 
     public ArrayList toonTegels(int score) {
         for (Object tegel : tegelArrayList) {
+            Tegel t = (Tegel) tegel;
             for (int nummer = 21; nummer <= score; nummer++) {
-                if (tegel.equals(nummer)) {
+                if (t.getNummer()==nummer) {
                     kiesbareTegels.add(nummer);
                 }
             }
