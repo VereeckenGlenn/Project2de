@@ -14,10 +14,79 @@ public class Speler {
     private boolean eindeBeurt = false;
     private int aantalKeer = 0;
     private LocalDate geboorteDatum;
+    private ArrayList gekozenTegels = new ArrayList<Integer>();
+    private ArrayList dobbelstenenArrayList = new ArrayList<>();
+    private ArrayList gekozenGetallen = new ArrayList<>();
+    private ArrayList kiesbareTegels = new ArrayList<>();
+    private ArrayList tegelArrayList = new ArrayList<Tegel>();
 
-    ArrayList dobbelstenenArrayList = new ArrayList<>();
-    ArrayList gekozenGetallen = new ArrayList<>();
+      public void maakTegels() {
+        int aantalWormen;
+        for (int nummer = 21; nummer <= 36; nummer++) {
+            if (nummer >= 21 && nummer < 25) {
+                aantalWormen = 1;
+            } else {
+                if (nummer >= 25 && nummer < 29) {
+                    aantalWormen = 2;
+                } else {
+                    if (nummer >= 29 && nummer < 33) {
+                        aantalWormen = 3;
 
+                    } else {
+                        aantalWormen = 4;
+                    }
+                }
+            }
+            Tegel tegel = new Tegel(nummer, aantalWormen);
+            tegelArrayList.add(tegel);
+        }
+
+    }
+    public ArrayList toonTegels(int score) {
+        for (Object tegel : tegelArrayList) {
+            Tegel t = (Tegel) tegel;
+            for (int nummer = 21; nummer <= score; nummer++) {
+                if (t.getNummer() == nummer) {
+                    kiesbareTegels.add(nummer);
+                }
+            }
+        }
+        return kiesbareTegels;
+    }
+    
+    public int kiesTegel(int gekozenTegel) {
+        int returnValue = 0;
+        if (kiesbareTegels.contains(gekozenTegel)) {
+            returnValue = gekozenTegel;
+        } else {
+            throw new IllegalArgumentException("De gekozen tegel is niet beschikbaar.");
+        }
+        this.verwijderTegel(gekozenTegel);
+        return returnValue;
+    }
+    public void verwijderTegel(int gekozenTegel) {
+        for (Object tegel : tegelArrayList) {
+            if (tegel.equals(gekozenTegel)) {
+                tegelArrayList.remove(tegel);
+            }
+        }
+    }
+    public void verwijderTegelVanSpeler(int tegel){
+        gekozenTegels.remove(tegel);
+    }
+    public void voegTegelToeAanSpeler(int tegel){
+        gekozenTegels.add(tegel);
+    }
+    public int ToonBovensteTegel(){
+        if(!gekozenTegels.isEmpty()){
+            int x = gekozenTegels.size()-1;
+            Object tegel = gekozenTegels.get(x);
+            int i = (int) tegel;
+            return i;
+        }
+        return -1;
+    }
+    
     public void stelDobbelstenenArrayIn() {
         geroldeDobbelstenen = "";
         dobbelstenenArrayList.clear();
@@ -165,4 +234,5 @@ public class Speler {
         }
         return false;
     }
+        
 } 

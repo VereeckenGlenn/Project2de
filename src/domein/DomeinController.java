@@ -11,6 +11,8 @@ public class DomeinController {
     ArrayList kiesbareTegels = new ArrayList<>();
     ArrayList spelerLijst = new ArrayList<Speler>();
     ArrayList gesorteerdeSpelerLijst = new ArrayList<Speler>();
+    ArrayList spelerTegels = new ArrayList<>();
+    
 
     public DomeinController() {
         this.speler = new Speler();
@@ -46,17 +48,24 @@ public class DomeinController {
                 }
             }
             leeftijden[positie] = leeftijden[i];
-            leeftijden[i] = max;
-        }
-            for (int i = 0; i <= leeftijden.length - 1; i++) {
+            leeftijden[i] = max;           
+        } 
+        int[] leeftijdenReverse = new int[leeftijden.length];
+        int j = leeftijden.length; 
+        for (int i = 0; i < leeftijden.length; i++) { 
+            leeftijdenReverse[j - 1] = leeftijden[i]; 
+            j = j - 1; 
                 for (Object speler : spelerLijst) {
                 Speler s = (Speler) speler;
-                if (s.berekenLeeftijd(s.getGeboorteDatum(), huidigeDatum) == leeftijden[i]) {
+                int k = 0;
+                if (leeftijdenReverse[k] == s.berekenLeeftijd(s.getGeboorteDatum(), huidigeDatum)) {
                     gesorteerdeSpelerLijst.add(s);
+                    k++;
                 }
             }
         }
     }
+    
 
     public ArrayList getGesorteerdeSpelerLijst() {
         return gesorteerdeSpelerLijst;
@@ -87,57 +96,35 @@ public class DomeinController {
     }
 
     public void maakTegels() {
-        int aantalWormen;
-        for (int nummer = 21; nummer <= 36; nummer++) {
-            if (nummer >= 21 && nummer < 25) {
-                aantalWormen = 1;
-            } else {
-                if (nummer >= 25 && nummer < 29) {
-                    aantalWormen = 2;
-                } else {
-                    if (nummer >= 29 && nummer < 33) {
-                        aantalWormen = 3;
-
-                    } else {
-                        aantalWormen = 4;
-                    }
-                }
-            }
-            Tegel tegel = new Tegel(nummer, aantalWormen);
-            tegelArrayList.add(tegel);
-        }
-
+      speler.maakTegels();
     }
 
     public ArrayList toonTegels(int score) {
-        for (Object tegel : tegelArrayList) {
-            Tegel t = (Tegel) tegel;
-            for (int nummer = 21; nummer <= score; nummer++) {
-                if (t.getNummer() == nummer) {
-                    kiesbareTegels.add(nummer);
+        return speler.toonTegels(score);
+    }
+    public ArrayList toonTegelsVanSpelers(){
+         for (Object speler : spelerLijst) {
+         Speler s = (Speler)speler;      
+        spelerTegels.add(s.ToonBovensteTegel());
+        }
+         
+        return spelerTegels;
+    }
+    
+    public int kiesTegel(int gekozenTegel) {
+        if(spelerTegels.contains(gekozenTegel)){
+            for (Object speler : spelerLijst) {
+                Speler s = (Speler)speler;
+                if(s.ToonBovensteTegel()==gekozenTegel){
+                    s.verwijderTegelVanSpeler(gekozenTegel);
                 }
             }
         }
-        return kiesbareTegels;
-    }
-
-    public int kiesTegel(int gekozenTegel) {
-        int returnValue = 0;
-        if (kiesbareTegels.contains(gekozenTegel)) {
-            returnValue = gekozenTegel;
-        } else {
-            throw new IllegalArgumentException("De gekozen tegel is niet beschikbaar.");
-        }
-        this.verwijderTegel(gekozenTegel);
-        return returnValue;
+       return speler.kiesTegel(gekozenTegel);
     }
 
     public void verwijderTegel(int gekozenTegel) {
-        for (Object tegel : tegelArrayList) {
-            if (tegel.equals(gekozenTegel)) {
-                tegelArrayList.remove(tegel);
-            }
-        }
+        speler.verwijderTegel(gekozenTegel);
     }
 
     public void DCvergelijkGekozenGetalMetArrayDobbelstenen(int gekozenGetal) {
