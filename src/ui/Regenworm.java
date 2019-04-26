@@ -98,7 +98,8 @@ public class Regenworm {
                         }
                     }
                     if (eindBeurtChecker) {
-                        System.out.println(dc.toonTegels(dc.getTotaalScore()).toString());
+                        System.out.printf("de spelers hebben volgende tegels: %s", dc.toonTegelsVanSpelers().toString());
+                        System.out.printf("beschikbare tegels: %s", dc.toonTegels(dc.getTotaalScore()).toString());
                         System.out.print("Geef het getal in van de tegel die je wil nemen: ");
                         int gekozenTegel = input.nextInt();
                         dc.kiesTegel(gekozenTegel);
