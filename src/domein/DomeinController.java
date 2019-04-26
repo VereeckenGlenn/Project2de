@@ -1,18 +1,8 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package domein;
 
 import java.util.ArrayList;
 import java.time.LocalDate;
 
-
-/**
- *
- * @author loren
- */
 public class DomeinController {
 
     ArrayList tegelArrayList = new ArrayList<Tegel>();
@@ -32,34 +22,37 @@ public class DomeinController {
             player.setNaam(namen[i]);
             player.setGeboorteDatum(geboorteDatums[i]);
             spelerLijst.add(player);
-            this.SorteerSpelersOpGeboorteDatum(aantal,huidigeDatum);
         }
+        this.SorteerSpelersOpGeboorteDatum(aantal, huidigeDatum);
+
     }
-    public void SorteerSpelersOpGeboorteDatum(int aantal, LocalDate huidigeDatum){
+
+    public void SorteerSpelersOpGeboorteDatum(int aantal, LocalDate huidigeDatum) {
         int[] leeftijden = new int[aantal];
+        int x = 0;
+
         for (Object speler : spelerLijst) {
-            int i=0;
             Speler s = (Speler) speler;
-            leeftijden[i] = s.berekenLeeftijd(this.getGeboorteDatum(), huidigeDatum);
-            i++;
+            leeftijden[x] = s.berekenLeeftijd(s.getGeboorteDatum(), huidigeDatum);
+            x++;
         }
-        for (int i = leeftijden.length-1; i > 1; i--) {
-         int positie = i;
-         int max = leeftijden[i];
-         for(int j=i-1; i>0; i--){
-             if(leeftijden[j]>max){
-                 positie =j;
-                 max = leeftijden[j];
-             }
-         }
-         leeftijden[positie] = leeftijden[i];
-         leeftijden[i] = max;
+        for (int i = leeftijden.length - 1; i >= 1; i--) {
+            int positie = i;
+            int max = leeftijden[i];
+            for (int j = i - 1; i > 0; i--) {
+                if (leeftijden[j] > max) {
+                    positie = j;
+                    max = leeftijden[j];
+                }
+            }
+            leeftijden[positie] = leeftijden[i];
+            leeftijden[i] = max;
         }
-        for (Object speler : spelerLijst) {
-            for (int i = 0; i < leeftijden.length-1; i++) { 
-            Speler s = (Speler) speler;
-            if(s.berekenLeeftijd(huidigeDatum, huidigeDatum)==leeftijden[i]){
-                gesorteerdeSpelerLijst.add(s);
+            for (int i = 0; i <= leeftijden.length - 1; i++) {
+                for (Object speler : spelerLijst) {
+                Speler s = (Speler) speler;
+                if (s.berekenLeeftijd(s.getGeboorteDatum(), huidigeDatum) == leeftijden[i]) {
+                    gesorteerdeSpelerLijst.add(s);
                 }
             }
         }
@@ -69,6 +62,12 @@ public class DomeinController {
         return gesorteerdeSpelerLijst;
     }
     
+    public String getGesorteerdeSpelerNaam(int nummer){
+       ArrayList gesorteerd = getGesorteerdeSpelerLijst();
+       Object player = gesorteerd.get(nummer);
+        Speler s = (Speler) player;
+        return s.getNaam();
+    }
 
     public ArrayList getSpelerLijst() {
         return spelerLijst;
@@ -77,55 +76,17 @@ public class DomeinController {
     public void setNaam(String naam) {
         speler.setNaam(naam);
     }
-    
 
-    public String getNaam(int nummer) { 
-                Speler s = (Speler) spelerLijst.get(nummer);
-                return s.getNaam();
+    public String getNaam(int nummer) {
+        Speler s = (Speler) spelerLijst.get(nummer);
+        return s.getNaam();
     }
 
     public LocalDate getGeboorteDatum() {
         return speler.getGeboorteDatum();
     }
-   
-/**
+
     public void maakTegels() {
-        for (int a = 21; a <= 36; a++) {
-            arrayMetTegelsEnkelNummers[a - 21] = a;
-        }
-    }
-
-    public ArrayList toonTegels(int score) {
-        for (int tegel : arrayMetTegelsEnkelNummers) {
-            for (int nummer = 21; nummer <= score; nummer++) {
-                if (tegel == score) {
-                    kiesbareTegels.add(nummer);
-                }
-            }
-        }
-        return kiesbareTegels;
-    }
-
-    public int kiesTegel(int gekozenTegel) {
-        int returnValue = 0;
-        if (kiesbareTegels.contains(gekozenTegel)) {
-            returnValue = gekozenTegel;
-        } else {
-            throw new IllegalArgumentException("De gekozen tegel is niet beschikbaar.");
-        }
-        this.verwijderTegel(gekozenTegel);
-        return returnValue;
-    }
-
-    public void verwijderTegel(int gekozenTegel) {
-        for (int a = 0; a < arrayMetTegelsEnkelNummers.length; a++) {
-            if (arrayMetTegelsEnkelNummers[a] == gekozenTegel) {
-                arrayMetTegelsEnkelNummers[a] = -1;
-            }
-        }
-    }
-*/
-        public void maakTegels() {
         int aantalWormen;
         for (int nummer = 21; nummer <= 36; nummer++) {
             if (nummer >= 21 && nummer < 25) {
@@ -152,29 +113,30 @@ public class DomeinController {
         for (Object tegel : tegelArrayList) {
             Tegel t = (Tegel) tegel;
             for (int nummer = 21; nummer <= score; nummer++) {
-                if (t.getNummer()==nummer) {
+                if (t.getNummer() == nummer) {
                     kiesbareTegels.add(nummer);
                 }
             }
         }
-        return kiesbareTegels ;
+        return kiesbareTegels;
     }
-    
-    public int kiesTegel(int gekozenTegel){
+
+    public int kiesTegel(int gekozenTegel) {
         int returnValue = 0;
-        if(kiesbareTegels.contains(gekozenTegel)){
+        if (kiesbareTegels.contains(gekozenTegel)) {
             returnValue = gekozenTegel;
-        }else{
-           throw new IllegalArgumentException("De gekozen tegel is niet beschikbaar."); 
+        } else {
+            throw new IllegalArgumentException("De gekozen tegel is niet beschikbaar.");
         }
         this.verwijderTegel(gekozenTegel);
         return returnValue;
     }
-    public void verwijderTegel(int gekozenTegel){
+
+    public void verwijderTegel(int gekozenTegel) {
         for (Object tegel : tegelArrayList) {
-           if(tegel.equals(gekozenTegel)){
-               tegelArrayList.remove(tegel);
-           } 
+            if (tegel.equals(gekozenTegel)) {
+                tegelArrayList.remove(tegel);
+            }
         }
     }
 

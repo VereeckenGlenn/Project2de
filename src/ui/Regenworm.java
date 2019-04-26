@@ -69,7 +69,7 @@ public class Regenworm {
         while (!dc.isEindeSpel()) {
             for (int i = 0; i < namen.length; i++) {
                 boolean eindBeurtChecker = false;
-                System.out.printf("het is %s's beurt%n", dc.getNaam(i));
+                System.out.printf("het is %s's beurt%n", dc.getGesorteerdeSpelerNaam(i));
 
                 while (!eindBeurtChecker) {
                     dc.stelDobbelstenenArrayIn();

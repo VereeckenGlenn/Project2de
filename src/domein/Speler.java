@@ -34,9 +34,21 @@ public class Speler {
     }
     public int berekenLeeftijd(LocalDate geboorteDatum, LocalDate huidigeDatum){
         if((geboorteDatum != null)&&(huidigeDatum != null)){
-            return Period.between(geboorteDatum,huidigeDatum).getYears();
+            int dagen = Period.between(geboorteDatum,huidigeDatum).getDays();
+            int maanden = Period.between(geboorteDatum,huidigeDatum).getMonths();
+            int jaren = Period.between(geboorteDatum,huidigeDatum).getYears();
+            int totaal = 0;
+            if(jaren > 0){
+                totaal += jaren * 365;
+            }
+            if(maanden > 0){
+                totaal += maanden * 30;
+            }
+            totaal += dagen;
+            
+            return totaal;
         }
-        return 0;
+        return 99;
     }
 
     public ArrayList getDobbelstenenArray() {
