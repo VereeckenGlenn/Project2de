@@ -1,7 +1,14 @@
 package domein;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.List;
+import persistentie.spelermapper;
 
 public class DomeinController {
 
@@ -12,10 +19,60 @@ public class DomeinController {
     ArrayList spelerLijst = new ArrayList<Speler>();
     ArrayList gesorteerdeSpelerLijst = new ArrayList<Speler>();
     ArrayList spelerTegels = new ArrayList<>();
-    
+    spelermapper sm = new spelermapper();
 
-    public DomeinController() {
+    public DomeinController() throws ClassNotFoundException {
         this.speler = new Speler();
+        sm.StartDriver();
+    }
+    public LocalDate StringDateConvert(String geboorteDatum){
+            boolean exceptionGegooid= true;
+            LocalDate returnWaarde; 
+        do{
+            SimpleDateFormat format = new SimpleDateFormat("dd-mm-yyyy");
+            
+                Date dateRaw = null;
+                try {
+                    dateRaw = format.parse(geboorteDatum);
+                    exceptionGegooid = false;
+
+                    LocalDate dateConverted = LocalDate.ofInstant(dateRaw.toInstant(), ZoneId.systemDefault());
+                    returnWaarde = dateConverted;
+                } catch (ParseException ex) {
+                    exceptionGegooid = true;
+                    throw new IllegalArgumentException("de ingegeven datum voldoet niet aan de verwachting. dd-mm-yyyy");
+                }
+            } while (exceptionGegooid);
+        return returnWaarde;
+    }
+    public ArrayList<String> toonSpelers(){
+       ArrayList<String> spelernamen = new ArrayList<>();
+       List<String> namen = sm.zoekAlleGebruikers();
+        for (String naam : namen) {
+          spelernamen.add(naam);
+        }
+       if(spelernamen.isEmpty()){
+           spelernamen.add("default");
+       }
+     return spelernamen;   
+    }
+    public void voegSpelerToe(String speler,String wachtwoord) throws Exception{
+      Speler s = sm.zoekSpeler(speler);
+      if(wachtwoord.equals(s.getWachtwoord())){
+           spelerLijst.add(s);
+      }else{
+      throw new Exception("Het opgegeven wachtwoord is onjuist");
+      }
+     
+    }
+    
+    public void maakSpelerAan(String naam, String wachtwoord, String geboorteDatum){
+        Speler player = new Speler();
+        player.setNaam(naam);
+        player.setGeboorteDatum(StringDateConvert(geboorteDatum));
+        player.setWachtwoord(wachtwoord);
+        player.setHighscore(0);
+        sm.voegSpelerToe(player);
     }
 
     public void maakSpelers(int aantal, String[] namen, LocalDate[] geboorteDatums, LocalDate huidigeDatum) {
@@ -82,6 +139,15 @@ public class DomeinController {
         return spelerLijst;
     }
 
+      public String getWachtwoord(int nummer) {
+        Speler s = (Speler) spelerLijst.get(nummer);
+        return s.getWachtwoord();
+    }
+
+    public void setWachtwoord(String wachtwoord) {
+        speler.setWachtwoord(wachtwoord);
+    }
+        
     public void setNaam(String naam) {
         speler.setNaam(naam);
     }

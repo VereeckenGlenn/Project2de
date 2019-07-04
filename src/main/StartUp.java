@@ -1,14 +1,22 @@
 package main;
 
-import domein.DomeinController;
-import ui.Regenworm;
 
-public class StartUp {
+import gui.RegenwormenApplicatie;
+import javafx.application.Application;
+import javafx.stage.Stage;
+
+
+
+public class StartUp extends Application{
 
     public static void main(String[] args) {
-        DomeinController dc = new DomeinController();
+        RegenwormenApplicatie.launch(args);
+            
         
-        new Regenworm().start();
+    }
+
+    @Override
+    public void start(Stage primaryStage){
         
     }
 

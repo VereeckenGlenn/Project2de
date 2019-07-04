@@ -7,6 +7,8 @@ import java.util.ArrayList;
 public class Speler {
 
     private String naam;
+    private String wachtwoord;
+    private int highscore;
     private int score = 0;
     private int aantalDobbelstenen = 8;
     private String geroldeDobbelstenen;
@@ -19,7 +21,7 @@ public class Speler {
     private ArrayList gekozenGetallen = new ArrayList<>();
     private ArrayList kiesbareTegels = new ArrayList<>();
     private ArrayList tegelArrayList = new ArrayList<Tegel>();
-
+    
       public void maakTegels() {
         int aantalWormen;
         for (int nummer = 21; nummer <= 36; nummer++) {
@@ -42,6 +44,15 @@ public class Speler {
         }
 
     }
+
+    public int getHighscore() {
+        return highscore;
+    }
+
+    public void setHighscore(int highscore) {
+        this.highscore = highscore;
+    }
+      
     public ArrayList toonTegels(int score) {
         for (Object tegel : tegelArrayList) {
             Tegel t = (Tegel) tegel;
@@ -233,6 +244,14 @@ public class Speler {
             }
         }
         return false;
+    }
+
+    public String getWachtwoord() {
+        return wachtwoord;
+    }
+
+    public void setWachtwoord(String wachtwoord) {
+        this.wachtwoord = wachtwoord;
     }
         
 } 
