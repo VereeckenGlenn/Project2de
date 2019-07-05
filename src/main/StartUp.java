@@ -4,20 +4,15 @@ package main;
 import gui.RegenwormenApplicatie;
 import javafx.application.Application;
 import javafx.stage.Stage;
+import ui.Regenworm;
 
 
-
-public class StartUp extends Application{
+public class StartUp{
 
     public static void main(String[] args) {
-        RegenwormenApplicatie.launch(args);
+     
+    }
             
-        
-    }
-
-    @Override
-    public void start(Stage primaryStage){
-        
-    }
+  
 
 }

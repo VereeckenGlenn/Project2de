@@ -1,5 +1,6 @@
 package domein;
 
+import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -45,12 +46,15 @@ public class DomeinController {
             } while (exceptionGegooid);
         return returnWaarde;
     }
+    public void maakTegels() {
+        speler.maakTegels();
+    }
     public ArrayList<String> toonSpelers(){
        ArrayList<String> spelernamen = new ArrayList<>();
        List<String> namen = sm.zoekAlleGebruikers();
-        for (String naam : namen) {
-          spelernamen.add(naam);
-        }
+       namen.forEach((naam) -> {
+           spelernamen.add(naam);
+        });
        if(spelernamen.isEmpty()){
            spelernamen.add("default");
        }
@@ -161,9 +165,7 @@ public class DomeinController {
         return speler.getGeboorteDatum();
     }
 
-    public void maakTegels() {
-      speler.maakTegels();
-    }
+    
 
     public ArrayList toonTegels(int score) {
         return speler.toonTegels(score);

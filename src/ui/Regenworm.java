@@ -12,10 +12,16 @@ import java.util.Scanner;
 
 public class Regenworm {
 
-    DomeinController dc = new DomeinController();
     Scanner input = new Scanner(System.in);
 
     public void start() {
+
+
+        try {
+               DomeinController dc = new DomeinController();
+
+           
+    
 
         dc.maakTegels();
         int aantalSpelers = 0;
@@ -107,6 +113,8 @@ public class Regenworm {
                     }
                 }
             }
-        }
+        } } catch (ClassNotFoundException e) {
+               System.err.print("klasse spelermapper niet gevonden.") ;
+            }
     }
 }

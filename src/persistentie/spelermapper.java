@@ -16,10 +16,10 @@ public class spelermapper {
 
     
    public void StartDriver() throws ClassNotFoundException{
-       Class.forName("com.mysql.jdbc.Driver");
+       Class.forName ("com.mysql.jdbc.Driver");
    }
     
-   private static final String JDBC_URL = "jdbc:mysql://localhost:3306/Regenwormen?user=Regenwormen&password=Regenwormen&serverTimezone=UTC";
+   private static final String JDBC_URL = "jdbc:mysql://localhost:3306/spelers?user=Regenwormen&password=Regenwormen&serverTimezone=UTC";
     public boolean voegSpelerToe(Speler speler)
     {
         try (Connection conn = DriverManager.getConnection(JDBC_URL)) {

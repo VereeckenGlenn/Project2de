@@ -1,6 +1,7 @@
 package gui;
 
 import domein.DomeinController;
+import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -130,10 +131,10 @@ public class RegenwormenApplicatie extends Application {
         
  
         //effective spel
-      /**  dc.maakTegels();
+        dc.maakTegels();
         int aantalSpelers = 0;
         boolean exceptionGegooid = false;
-       */
+      
        
      /**  
         do {
@@ -227,17 +228,7 @@ public class RegenwormenApplicatie extends Application {
         
         
         
-        stopSpel.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent e) {
-                boolean saveCheck = false;
-                Optional<ButtonType> buttonCheck = saveAlert.showAndWait();
-                if (buttonCheck.equals(ButtonData.OK_DONE)) {
-                    //save naar databank
-                }
-                window.setScene(startScene);
-            }
-        });
+      
 
     }
 
