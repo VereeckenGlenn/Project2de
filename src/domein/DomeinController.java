@@ -21,11 +21,35 @@ public class DomeinController {
     ArrayList gesorteerdeSpelerLijst = new ArrayList<Speler>();
     ArrayList spelerTegels = new ArrayList<>();
     spelermapper sm = new spelermapper();
+    int aantalSpelers = 2;
+    List<String> spelerNamen = new ArrayList<>();
+    
+    public boolean ControleerSpelerNaamEnWachtwoord(String naam, String ww){
+        boolean returnwaarde = false;
+        Speler s = sm.zoekSpeler(naam);
+        if(s.getNaam().equals(naam)){
+            if(s.getWachtwoord().equals(ww)){
+                spelerLijst.add(s);
+                returnwaarde = true;
+            }
+        }
+        
+        return returnwaarde;
+    }
 
     public DomeinController() throws ClassNotFoundException {
         this.speler = new Speler();
         sm.StartDriver();
     }
+
+    public int getAantalSpelers() {
+        return aantalSpelers;
+    }
+
+    public void setAantalSpelers(int aantalSpelers) {
+        this.aantalSpelers = aantalSpelers;
+    }
+    
     public LocalDate StringDateConvert(String geboorteDatum){
             boolean exceptionGegooid= true;
             LocalDate returnWaarde; 

@@ -23,20 +23,30 @@ public class spelermapper {
     public boolean voegSpelerToe(Speler speler)
     {
         try (Connection conn = DriverManager.getConnection(JDBC_URL)) {
-            PreparedStatement queryNieuweSpeler = conn.prepareStatement("INSERT INTO spelerinfo VALUES (?,?,?,?)");
-            queryNieuweSpeler.setString(1,speler.getNaam());
-            queryNieuweSpeler.setString(2, speler.getWachtwoord());
-            queryNieuweSpeler.setDate(3, java.sql.Date.valueOf(speler.getGeboorteDatum()));
-            queryNieuweSpeler.setInt(4, speler.getHighscore());
-            queryNieuweSpeler.executeUpdate();
+           PreparedStatement queryZoekAantalSpelers = conn.prepareStatement("SELECT COUNT(*) from spelerinfo");
+            try (ResultSet rs = queryZoekAantalSpelers.executeQuery()) {
+                if(rs.next()){
+                   int aantalSpelers = rs.getInt(1);
+           PreparedStatement queryNieuweSpeler = conn.prepareStatement("INSERT INTO spelerinfo VALUES (?,?,?,?,?)");
+           queryNieuweSpeler.setInt(1, aantalSpelers);
+           queryNieuweSpeler.setString(2,speler.getNaam());
+           queryNieuweSpeler.setDate(3, java.sql.Date.valueOf(speler.getGeboorteDatum()));
+           queryNieuweSpeler.setString(4, speler.getWachtwoord());
+           queryNieuweSpeler.setInt(5, speler.getHighscore());
+           queryNieuweSpeler.executeUpdate();
             return true;
-        } catch (SQLException ex) {
+                }
+                }
+            }
+             catch (SQLException ex) {
             for (Throwable t : ex) {
                 t.printStackTrace();
+            
+            
             }
-            return false;
-        }
+        }return false;
     }
+     
 
     /*
      * Zoekt de gebruiker met de opgegeven naam op in de databank.
