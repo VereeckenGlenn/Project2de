@@ -34,6 +34,10 @@ import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
+import images.*;
+import javafx.scene.image.*;
+import javafx.geometry.Insets;
+
 
 public class RegenwormenApplicatie extends Application {
     
@@ -102,138 +106,165 @@ public class RegenwormenApplicatie extends Application {
 
          //selecteerSpelersScherm
         GridPane selecteerGrid = new GridPane();
-        spelerGrid.setAlignment(Pos.CENTER);
-        Scene selecteerScene = new Scene(selecteerGrid, 300, 200);
-        Label aantalSpelersLabel = new Label("Geef het aantal spelers in");
-        ChoiceBox aantalSpelers = new ChoiceBox();
-        aantalSpelers.getItems().addAll("2","3","4","5","6","7","8");
-        Button aantal = new Button();
-        Label naamLabel = new Label("geef de naam in voor de speler:");
-        TextField selecteerNaam = new TextField();
-        Button selecteerSpeler = new Button();
-        Label wwLabel = new Label("geef het wachtwoord in voor speler");
-        PasswordField ww = new PasswordField();
-        Button voegSpelerToe = new Button();
-        selecteerGrid.getChildren().addAll(aantalSpelersLabel,aantalSpelers,aantal);
+        selecteerGrid.setAlignment(Pos.CENTER);
+        Scene selecteerScene = new Scene(selecteerGrid, 300, 200);   
+        VBox selecteerBox1 = new VBox();
+        selecteerBox1.setAlignment(Pos.CENTER_LEFT);
+        VBox selecteerBox2 = new VBox();
+        selecteerBox2.setAlignment(Pos.CENTER);
+        VBox selecteerBox3 = new VBox();
+        selecteerBox3.setAlignment(Pos.BOTTOM_RIGHT);
+        Insets selectPadding = new Insets(50,50,50,50);
+        selecteerBox2.setPadding(selectPadding);
+        Label speler1 =  new Label("");
+        Label speler2 =  new Label("");
+        Label speler3 =  new Label("");
+        Label speler4 =  new Label("");
+        Label speler5 = new Label("");
+        Label speler6 = new Label("");
+        Label speler7 =  new Label("");
+        Label speler8 = new Label("");
+        Button voegSpelerToe = new Button("voeg speler toe");
+        Button naarSpel = new Button("begin spel");
+        selecteerBox1.getChildren().addAll(speler1, speler3,speler5,speler7);
+        selecteerBox2.getChildren().addAll(speler2,speler4,speler6,speler8);
+        selecteerBox3.getChildren().addAll(voegSpelerToe,naarSpel);
+        selecteerGrid.getChildren().addAll(selecteerBox1,selecteerBox2,selecteerBox3);
         
+            // selecteerSpelerScherm part 2
+            GridPane selecteerSpelerGrid = new GridPane();
+            selecteerSpelerGrid.setAlignment(Pos.CENTER);
+            Scene selecteerSpelerScene = new Scene(selecteerSpelerGrid,300,200);
+            VBox SelecteerSpelerBox = new VBox();
+            Label spelerNaamLabel = new Label("geef de naam in voor de speler");
+            TextField spelerNaamField = new TextField("naam");
+            Label wwLabel = new Label("geef het wachtwoord in voor de speler");
+            PasswordField wwField = new PasswordField();
+            Button confirm  = new Button("voeg Toe");
+            Alert spelerToegevoegd = new Alert(AlertType.INFORMATION);
+            Alert spelerNietToegevoegd = new Alert(AlertType.ERROR);
+            spelerToegevoegd.setHeaderText("speler toegevoegd");
+            spelerNietToegevoegd.setHeaderText("speler bestaat niet of wachtwoord is onjuist");
+            selecteerSpelerGrid.getChildren().addAll(SelecteerSpelerBox);
+            SelecteerSpelerBox.getChildren().addAll(spelerNaamLabel,spelerNaamField,wwLabel,wwField,confirm);
+            
+
             //speelscherm
             GridPane speelGrid = new GridPane();
             spelerGrid.setAlignment(Pos.CENTER);
             Scene speelScene = new Scene(speelGrid, 300, 200);
-            
+            //Image t21 = new Image("..\\images\21.png");
+            //Button tile21 = new Button();
+            Button tile22 = new Button();
+            Button tile23 = new Button();
+            Button tile24 = new Button();
+            Button tile25 = new Button();
+            Button tile26 = new Button();
+            Button tile27 = new Button();
+            Button tile28 = new Button();
+            Button tile29 = new Button();
+            Button tile30 = new Button();
+            Button tile32 = new Button();
+            Button tile33 = new Button();
+            Button tile34 = new Button();
+            Button tile35 = new Button();
+            Button tile36 = new Button();
+            Button dobbelsteen1 = new Button();
+            Button dobbelsteen2 = new Button();
+            Button dobbelsteen3 = new Button();
+            Button dobbelsteen4 = new Button();
+            Button dobbelsteen5 = new Button();
+            Button dobbelsteenRegenworm = new Button();
+            Label aanBeurt = new Label();
+            Button rolDobbelstenen = new Button("rol dobbelstenen");
+            Button eindeBeurt = new Button("eindig beurt");
             VBox speelBox = new VBox();
             speelBox.getChildren().addAll();
             speelGrid.getChildren().addAll(speelBox);
             
-            selecteerSpeler.setOnMouseClicked((MouseEvent e) -> {
-            Object spelers = aantalSpelers.getValue();
-            int spelerAantal = (int) spelers;
-            dc.setAantalSpelers(spelerAantal);
-            boolean blijfherhalen = true;
-            for(int i = 0; i< spelerAantal;i++){
-                while(blijfherhalen){  
-                    selecteerGrid.getChildren().clear();
-                    selecteerGrid.getChildren().addAll(naamLabel,selecteerNaam,wwLabel,ww,voegSpelerToe);
-                    if(dc.ControleerSpelerNaamEnWachtwoord(selecteerNaam.getText(),ww.getText())){
-                        blijfherhalen = false;   
-                    }
+            confirm.setOnMouseClicked(e -> {
+                int count = dc.getAantalSpelers();
+                if(dc.ControleerSpelerNaamEnWachtwoord(spelerNaamField.getText(),wwField.getText())){
+                    switch(count){
+                    case 1 : speler2.setText(spelerNaamField.getText()); break;
+                    case 2 : speler3.setText(spelerNaamField.getText()); break;
+                    case 3 : speler4.setText(spelerNaamField.getText()); break;
+                    case 4 : speler5.setText(spelerNaamField.getText()); break;
+                    case 5 : speler6.setText(spelerNaamField.getText()); break;
+                    case 6 : speler7.setText(spelerNaamField.getText()); break;
+                    case 7 : speler8.setText(spelerNaamField.getText()); break;
+                    default: speler1.setText(spelerNaamField.getText()); break;
                 }
-            }
-            dc.SorteerSpelersOpGeboorteDatum(spelerAantal, LocalDate.now());
-            window.setScene(speelScene);
+                    dc.setAantalSpelers(dc.getAantalSpelers()+1);
+                    spelerToegevoegd.show();
+                    window.setScene(selecteerScene);
+                }else{
+                    spelerNietToegevoegd.show();
+                }
             });
+            voegSpelerToe.setOnMouseClicked(e -> window.setScene(selecteerSpelerScene));
+            startButton.setOnMouseClicked(e -> window.setScene(selecteerScene));
+            naarSpel.setOnMouseClicked(e ->{
+                dc.maakTegels();
+                window.setScene(speelScene);
+                    });
+            eindeBeurt.setOnMouseClicked(e -> dc.EindeBeurt());    
+            rolDobbelstenen.setOnMouseClicked(e->{
+                dc.stelDobbelstenenArrayIn();
+                ArrayList dobbelstenen = dc.getDobbelstenen();
+                for (Object dobbelsteen : dobbelstenen) {
+                 int d = (int) dobbelsteen;
+                 switch(d){
+                     case 1:
+                     case 2:
+                     case 3:
+                     case 4:
+                     case 5:
+                     default:
+                 }
+            }
+            });        
+            
             //effective spel
-            dc.maakTegels();
-            boolean exceptionGegooid = false;
             
+        
+           
             
-            /**
-             * do {
-             * try {
-             * System.out.print("Geef het aantal spelers in: ");
-             *
-             * aantalSpelers = input.nextInt();
-             * if (aantalSpelers < 2 || aantalSpelers > 7) {
-             * throw new IllegalArgumentException();
-             * }
-             * exceptionGegooid = false;
-             * } catch (InputMismatchException | IllegalArgumentException e) {
-             * System.out.println("Het aantal spelers ligt niet tussen 2 en 7");
-             * exceptionGegooid = true;
-             * input.next();
-             * }
-             * } while (exceptionGegooid);
-             * String[] namen = new String[aantalSpelers];
-             * LocalDate[] leeftijden = new LocalDate[aantalSpelers];
-             * for (int i = 0; i < namen.length; i++) {
-             *
-             * System.out.printf("geef de naam voor speler %d: ", i + 1);
-             * namen[i] = input.next();
-             * do {
-             *
-             * System.out.printf("geef de geboortedatum in voor speler %d, dd-mm-yyyy:", i + 1);
-             * String date = input.next();
-             *
-             * SimpleDateFormat format = new SimpleDateFormat("dd-mm-yyyy");
-             *
-             * Date dateRaw = null;
-             * try {
-             * dateRaw = format.parse(date);
-             * exceptionGegooid = false;
-             *
-             * LocalDate dateConverted = LocalDate.ofInstant(dateRaw.toInstant(), ZoneId.systemDefault());
-             * leeftijden[i] = dateConverted;
-             * } catch (ParseException ex) {
-             * System.out.println("De ingegeven datum klopt niet. Probeer het opnieuw.");
-             * exceptionGegooid = true;
-             * }
-             * } while (exceptionGegooid);
-             *
-             * }
-             * dc.maakSpelers(aantalSpelers, namen, leeftijden, LocalDate.now());
-             * ArrayList spelerLijst = dc.getSpelerLijst();
-             *
-             * while (!dc.isEindeSpel()) {
-             * for (int i = 0; i < namen.length; i++) {
-             * boolean eindBeurtChecker = false;
-             * System.out.printf("het is %s's beurt%n", dc.getGesorteerdeSpelerNaam(i));
-             *
-             * while (!eindBeurtChecker) {
-             * dc.stelDobbelstenenArrayIn();
-             * System.out.println("Je rolde: ");
-             * System.out.println(dc.getDobbelstenenString());
-             *
-             * System.out.print("Geef het getal in dat je wil nemen (6 voor regenworm): ");
-             * boolean vergelijkChecker = false;
-             * int gekozenGetal = input.nextInt();
-             * while (!vergelijkChecker) {
-             * vergelijkChecker = dc.vergelijkGekozenGetalMetArrayDobbelstenen(gekozenGetal);
-             * if (vergelijkChecker) {
-             * int score = dc.berekenScore(gekozenGetal);
-             * System.out.printf("De score van deze worp is %d%n", score);
-             * dc.voegScoreSpelerToeAanTotaalScore(score);
-             * System.out.printf("Je totaal score bedraagt nu: %d%n", dc.getTotaalScore());
-             * int guard = 2;
-             * if (dc.getTotaalScore() >= 21) {
-             * System.out.print("Wenst u te stoppen? Geef 1 in voor ja, een ander getal voor nee: ");
-             * guard = input.nextInt();
-             * }
-             * eindBeurtChecker = dc.checkOfEindeSpel(guard, gekozenGetal);
-             * } else {
-             * System.out.println("Het getal is al gekozen, geef een nieuw getal in: ");
-             * gekozenGetal = input.nextInt();
-             * }
-             * }
-             * if (eindBeurtChecker) {
-             * System.out.printf("de spelers hebben volgende tegels: %s", dc.toonTegelsVanSpelers().toString());
-             * System.out.printf("beschikbare tegels: %s", dc.toonTegels(dc.getTotaalScore()).toString());
-             * System.out.print("Geef het getal in van de tegel die je wil nemen: ");
-             * int gekozenTegel = input.nextInt();
-             * dc.kiesTegel(gekozenTegel);
-             * dc.isEindeSpel();
-             * }
-             * }
-             * }
-             * }
-             */
+     
+       /**
+         * 
+         *
+         * while (!dc.isEindeSpel()) { for (int i = 0; i < namen.length; i++) {
+         * boolean eindBeurtChecker = false;
+         * System.out.printf("het is %s's beurt%n", dc.getGesorteerdeSpelerNaam(i));
+         *
+         * while (!eindBeurtChecker) {
+         * 
+         * System.out.println("Je rolde: ");
+         * System.out.println(dc.getDobbelstenenString());
+         *
+         * System.out.print("Geef het getal in dat je wil nemen (6 voor regenworm): ");
+         * boolean vergelijkChecker = false;
+         * int gekozenGetal = input.nextInt();
+         * while (!vergelijkChecker) {
+         * vergelijkChecker = dc.vergelijkGekozenGetalMetArrayDobbelstenen(gekozenGetal);
+         * if (vergelijkChecker) {
+         * int score = dc.berekenScore(gekozenGetal);
+         * System.out.printf("De score van deze worp is %d%n", score);
+         * dc.voegScoreSpelerToeAanTotaalScore(score);
+         * System.out.printf("Je totaal score bedraagt nu: %d%n", dc.getTotaalScore());
+         * int guard = 2;
+         * if (dc.getTotaalScore() >= 21) { System.out.print("Wenst u te
+         * stoppen? Geef 1 in voor ja, een ander getal voor nee: "); guard =
+         * input.nextInt(); } eindBeurtChecker = dc.checkOfEindeSpel(guard,
+         * gekozenGetal); } else { System.out.println("Het getal is al gekozen,
+         * geef een nieuw getal in: "); gekozenGetal = input.nextInt(); } } if
+         * (eindBeurtChecker) { System.out.printf("de spelers hebben volgende
+         * tegels: %s", dc.toonTegelsVanSpelers().toString());
+         * System.out.printf("beschikbare tegels: %s",
+         * dc.toonTegels(dc.getTotaalScore()).toString());
+         * System.out.print("Geef het getal in van de tegel die je wil nemen:
+         * "); int gekozenTegel = input.nextInt(); dc.kiesTegel(gekozenTegel);
+         * dc.isEindeSpel(); } } } }
+         */
         }}

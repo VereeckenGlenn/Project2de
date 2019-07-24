@@ -97,7 +97,7 @@ public class Regenworm {
                                 System.out.print("Wenst u te stoppen? Geef 1 in voor ja, een ander getal voor nee: ");
                                 guard = input.nextInt();
                             }
-                            eindBeurtChecker = dc.checkOfEindeSpel(guard, gekozenGetal);
+                            eindBeurtChecker = dc.CheckOfEindeBeurt(guard, gekozenGetal);
                         } else {
                             System.out.println("Het getal is al gekozen, geef een nieuw getal in: ");
                             gekozenGetal = input.nextInt();

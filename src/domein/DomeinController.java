@@ -21,8 +21,9 @@ public class DomeinController {
     ArrayList gesorteerdeSpelerLijst = new ArrayList<Speler>();
     ArrayList spelerTegels = new ArrayList<>();
     spelermapper sm = new spelermapper();
-    int aantalSpelers = 2;
+    int aantalSpelers = 0;
     List<String> spelerNamen = new ArrayList<>();
+    private int spelerAanBeurt = 0;
     
     public boolean ControleerSpelerNaamEnWachtwoord(String naam, String ww){
         boolean returnwaarde = false;
@@ -36,7 +37,7 @@ public class DomeinController {
         
         return returnwaarde;
     }
-
+  
     public DomeinController() throws ClassNotFoundException {
         this.speler = new Speler();
         sm.StartDriver();
@@ -150,7 +151,9 @@ public class DomeinController {
             }
         }
     }
-    
+    public ArrayList getDobbelstenen(){
+        return speler.getDobbelstenenArray();
+    }
 
     public ArrayList getGesorteerdeSpelerLijst() {
         return gesorteerdeSpelerLijst;
@@ -246,11 +249,20 @@ public class DomeinController {
     public int getAantalDobelstenen() {
         return speler.getAantalDobbelstenen();
     }
-
-    public boolean checkOfEindeSpel(int guard, int gekozenGetal) {
-        return speler.checkOfEindeSpel(guard, gekozenGetal);
+    
+    public void EindeBeurt(){
+        if(spelerAanBeurt==7){
+            spelerAanBeurt = 0;
+        }else{
+           spelerAanBeurt++;
+        }
+        
     }
 
+    public boolean CheckOfEindeBeurt(int guard, int gekozenGetal) {
+        return speler.checkOfEindeBeurt(guard, gekozenGetal);
+    }
+   
     public boolean vergelijkGekozenGetalMetArrayDobbelstenen(int gekozenGetal) {
         return speler.vergelijkGekozenGetalMetArrayDobbelstenen(gekozenGetal);
     }

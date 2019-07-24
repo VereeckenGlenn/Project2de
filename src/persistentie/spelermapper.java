@@ -26,7 +26,7 @@ public class spelermapper {
            PreparedStatement queryZoekAantalSpelers = conn.prepareStatement("SELECT COUNT(*) from spelerinfo");
             try (ResultSet rs = queryZoekAantalSpelers.executeQuery()) {
                 if(rs.next()){
-                   int aantalSpelers = rs.getInt(1);
+                   int aantalSpelers = rs.getInt(1)+1;
            PreparedStatement queryNieuweSpeler = conn.prepareStatement("INSERT INTO spelerinfo VALUES (?,?,?,?,?)");
            queryNieuweSpeler.setInt(1, aantalSpelers);
            queryNieuweSpeler.setString(2,speler.getNaam());
@@ -66,7 +66,7 @@ public class spelermapper {
                     String spelerWachtwoord = rs.getString("wachtwoord");
                     speler = new Speler();
                     speler.setNaam(spelernaam);
-                    LocalDate leeftijd = spelerLeeftijd.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+                    LocalDate leeftijd = spelerLeeftijd.toLocalDate();
                     speler.setGeboorteDatum(leeftijd);
                     speler.setWachtwoord(spelerWachtwoord);
                 }

@@ -210,7 +210,7 @@ public class Speler {
         return aantalDobbelstenen;
     }
 
-    public boolean checkOfEindeSpel(int guard, int gekozenGetal) {
+    public boolean checkOfEindeBeurt(int guard, int gekozenGetal) {
         if (aantalDobbelstenen == 0 || zijnWaardenHetzelfde()) {
             eindeBeurt = true;
         }
