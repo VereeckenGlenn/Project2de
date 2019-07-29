@@ -259,9 +259,7 @@ public class DomeinController {
         
     }
 
-    public boolean CheckOfEindeBeurt(int guard, int gekozenGetal) {
-        return speler.checkOfEindeBeurt(guard, gekozenGetal);
-    }
+ 
    
     public boolean vergelijkGekozenGetalMetArrayDobbelstenen(int gekozenGetal) {
         return speler.vergelijkGekozenGetalMetArrayDobbelstenen(gekozenGetal);
@@ -278,5 +276,12 @@ public class DomeinController {
             return true;
         }
         return false;
+    }
+
+    public int getSpelerAanBeurt() {
+        return spelerAanBeurt;
+    }
+    public void voegTegelToeAanSpeler(int tegel){
+        speler.voegTegelToeAanSpeler(tegel);
     }
 }

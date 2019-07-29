@@ -34,17 +34,26 @@ import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
-import images.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import javafx.scene.image.*;
 import javafx.geometry.Insets;
+import javafx.scene.Node;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
+import javafx.scene.text.Font;
+import javax.imageio.ImageIO;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
 
 
 public class RegenwormenApplicatie extends Application {
     
     DomeinController dc;
     Stage window;
-    Scene speelScherm;
-    Scene spelerScherm;
     
    public static void main(String[] args) {
         launch(args);
@@ -150,37 +159,52 @@ public class RegenwormenApplicatie extends Application {
             
 
             //speelscherm
-            GridPane speelGrid = new GridPane();
+            BorderPane speelGrid = new BorderPane();
             spelerGrid.setAlignment(Pos.CENTER);
             Scene speelScene = new Scene(speelGrid, 300, 200);
-            //Image t21 = new Image("..\\images\21.png");
-            //Button tile21 = new Button();
-            Button tile22 = new Button();
-            Button tile23 = new Button();
-            Button tile24 = new Button();
-            Button tile25 = new Button();
-            Button tile26 = new Button();
-            Button tile27 = new Button();
-            Button tile28 = new Button();
-            Button tile29 = new Button();
-            Button tile30 = new Button();
-            Button tile32 = new Button();
-            Button tile33 = new Button();
-            Button tile34 = new Button();
-            Button tile35 = new Button();
-            Button tile36 = new Button();
-            Button dobbelsteen1 = new Button();
-            Button dobbelsteen2 = new Button();
-            Button dobbelsteen3 = new Button();
-            Button dobbelsteen4 = new Button();
-            Button dobbelsteen5 = new Button();
-            Button dobbelsteenRegenworm = new Button();
+            HBox tileBox = new HBox();
+            HBox dobbelBox = new HBox();
+            ImageView tile21 = new ImageView("https://imgur.com/aQNJujv.png");
+            ImageView tile22 = new ImageView("https://imgur.com/cEUpShY.png");
+            ImageView tile23 = new ImageView("https://imgur.com/7Zm7IWm.png");
+            ImageView tile24 = new ImageView("https://imgur.com/w3oBE3g.png");
+            ImageView tile25 = new ImageView("https://imgur.com/6bgMl8y.png");
+            ImageView tile26 = new ImageView("https://imgur.com/DVLkdFW.png");
+            ImageView tile27 = new ImageView("https://imgur.com/fSwAMeD.png");
+            ImageView tile28 = new ImageView("https://imgur.com/tLXhm1y.png");
+            ImageView tile29 = new ImageView("https://imgur.com/xKP3OUz.png");
+            ImageView tile30 = new ImageView("https://imgur.com/Iq11Tbt.png");
+            ImageView tile31 = new ImageView("https://imgur.com/5xdaSvB.png");
+            ImageView tile32 = new ImageView("https://imgur.com/5xdaSvB.png");
+            ImageView tile33 = new ImageView("https://imgur.com/aWmyCnb.png");
+            ImageView tile34 = new ImageView("https://imgur.com/rp9NOjp.png");
+            ImageView tile35 = new ImageView("https://imgur.com/ZGBhNJy.png");
+            ImageView tile36 = new ImageView("https://imgur.com/ZGBhNJy.png");
+            ImageView dobbelsteen1 = new ImageView("https://imgur.com/Hb1yzNy.png");
+            ImageView dobbelsteen2 = new ImageView("https://imgur.com/Hb1yzNy.png");
+            ImageView dobbelsteen3 = new ImageView("https://imgur.com/sLvt8uQ.png");
+            ImageView dobbelsteen4 = new ImageView("https://imgur.com/sLvt8uQ.png");
+            ImageView dobbelsteen5 = new ImageView("https://imgur.com/oKnxkzL.png");
+            ImageView dobbelsteenRegenworm = new ImageView("https://imgur.com/WTqfvL1.png");
             Label aanBeurt = new Label();
+            aanBeurt.setFont(Font.font(STYLESHEET_MODENA,50));
+            Insets aanBeurtInset = new Insets(0,10,0,0);
+            aanBeurt.setPadding(aanBeurtInset);
             Button rolDobbelstenen = new Button("rol dobbelstenen");
             Button eindeBeurt = new Button("eindig beurt");
-            VBox speelBox = new VBox();
-            speelBox.getChildren().addAll();
-            speelGrid.getChildren().addAll(speelBox);
+            Alert dobbelAlert = new Alert(AlertType.INFORMATION);
+            dobbelAlert.setHeaderText("het geselecteerde getal is al is gekozen, probeer opniew");
+            Label totaalScore = new Label();
+            HBox topBox = new HBox();
+            HBox bottemBox = new HBox();
+            topBox.getChildren().addAll(aanBeurt, tileBox);
+            bottemBox.getChildren().addAll(rolDobbelstenen,eindeBeurt);
+            bottemBox.setAlignment(Pos.CENTER_RIGHT);
+            speelGrid.setTop(topBox);
+            speelGrid.setRight(totaalScore);
+            speelGrid.setCenter(dobbelBox);
+            speelGrid.setBottom(bottemBox);
+            tileBox.getChildren().addAll(tile21,tile22,tile23,tile24,tile25,tile26,tile27,tile28,tile29,tile30,tile31,tile32,tile33,tile34,tile35,tile36);
             
             confirm.setOnMouseClicked(e -> {
                 int count = dc.getAantalSpelers();
@@ -205,25 +229,231 @@ public class RegenwormenApplicatie extends Application {
             voegSpelerToe.setOnMouseClicked(e -> window.setScene(selecteerSpelerScene));
             startButton.setOnMouseClicked(e -> window.setScene(selecteerScene));
             naarSpel.setOnMouseClicked(e ->{
+                dc.SorteerSpelersOpGeboorteDatum(dc.getAantalSpelers(), LocalDate.now());
                 dc.maakTegels();
+                aanBeurt.setText(dc.getGesorteerdeSpelerNaam(dc.getSpelerAanBeurt()));
                 window.setScene(speelScene);
                     });
-            eindeBeurt.setOnMouseClicked(e -> dc.EindeBeurt());    
+            eindeBeurt.setOnMouseClicked(e -> {
+                dc.EindeBeurt();
+                aanBeurt.setText(dc.getGesorteerdeSpelerNaam(dc.getSpelerAanBeurt()));
+                    });    
             rolDobbelstenen.setOnMouseClicked(e->{
                 dc.stelDobbelstenenArrayIn();
                 ArrayList dobbelstenen = dc.getDobbelstenen();
                 for (Object dobbelsteen : dobbelstenen) {
                  int d = (int) dobbelsteen;
                  switch(d){
-                     case 1:
-                     case 2:
-                     case 3:
-                     case 4:
-                     case 5:
-                     default:
+                     case 1: dobbelBox.getChildren().addAll(dobbelsteen1); break;
+                     case 2: dobbelBox.getChildren().addAll(dobbelsteen2); break;
+                     case 3: dobbelBox.getChildren().addAll(dobbelsteen3); break;
+                     case 4: dobbelBox.getChildren().addAll(dobbelsteen4); break;
+                     case 5: dobbelBox.getChildren().addAll(dobbelsteen5); break;
+                     default: dobbelBox.getChildren().addAll(dobbelsteenRegenworm); break;
                  }
             }
             });        
+            dobbelsteen1.setOnMouseClicked(e->{
+              if(dc.vergelijkGekozenGetalMetArrayDobbelstenen(1)){
+              dc.voegScoreSpelerToeAanTotaalScore(dc.berekenScore(1)); 
+              totaalScore.setText(String.format("%d",dc.getTotaalScore()));
+              dobbelBox.getChildren().clear();
+              }else{
+                    dobbelAlert.show();                        
+              }
+            });
+            dobbelsteen2.setOnMouseClicked(e->{
+              if(dc.vergelijkGekozenGetalMetArrayDobbelstenen(2)){
+              dc.voegScoreSpelerToeAanTotaalScore(dc.berekenScore(2)); 
+              totaalScore.setText(String.format("%d",dc.getTotaalScore()));
+              dobbelBox.getChildren().clear();
+              }else{
+                    dobbelAlert.show();                        
+              }
+            });
+            dobbelsteen3.setOnMouseClicked(e->{
+              if(dc.vergelijkGekozenGetalMetArrayDobbelstenen(3)){
+              dc.voegScoreSpelerToeAanTotaalScore(dc.berekenScore(3)); 
+              totaalScore.setText(String.format("%d",dc.getTotaalScore()));
+              dobbelBox.getChildren().clear();
+              }else{
+                    dobbelAlert.show();                        
+              }
+            });
+            dobbelsteen4.setOnMouseClicked(e->{
+              if(dc.vergelijkGekozenGetalMetArrayDobbelstenen(4)){
+              dc.voegScoreSpelerToeAanTotaalScore(dc.berekenScore(4)); 
+              totaalScore.setText(String.format("%d",dc.getTotaalScore()));
+              dobbelBox.getChildren().clear();
+              }else{
+                    dobbelAlert.show();                        
+              }
+            });
+            dobbelsteen5.setOnMouseClicked(e->{
+              if(dc.vergelijkGekozenGetalMetArrayDobbelstenen(5)){
+              dc.voegScoreSpelerToeAanTotaalScore(dc.berekenScore(5)); 
+              totaalScore.setText(String.format("%d",dc.getTotaalScore()));
+              dobbelBox.getChildren().clear();
+              }else{
+                    dobbelAlert.show();                        
+              }
+            });
+            dobbelsteenRegenworm.setOnMouseClicked(e->{
+              if(dc.vergelijkGekozenGetalMetArrayDobbelstenen(6)){
+              dc.voegScoreSpelerToeAanTotaalScore(dc.berekenScore(6)); 
+              totaalScore.setText(String.format("%d",dc.getTotaalScore()));
+              dobbelBox.getChildren().clear();
+              }else{
+                    dobbelAlert.show();                        
+              }
+            });
+            
+            tile21.setOnMouseClicked(e->{
+                int totaalscore = dc.getTotaalScore();
+                if(totaalscore >=21){
+                    tileBox.getChildren().remove(tile21);
+                    dc.voegTegelToeAanSpeler(21);
+                dc.EindeBeurt();
+                aanBeurt.setText(dc.getGesorteerdeSpelerNaam(dc.getSpelerAanBeurt()));
+                }
+            });
+            tile22.setOnMouseClicked(e->{
+                int totaalscore = dc.getTotaalScore();
+                if(totaalscore >=22){
+                    tileBox.getChildren().remove(tile22);
+                    dc.voegTegelToeAanSpeler(22);
+                dc.EindeBeurt();
+                aanBeurt.setText(dc.getGesorteerdeSpelerNaam(dc.getSpelerAanBeurt()));
+                }
+            });
+            tile23.setOnMouseClicked(e->{
+                int totaalscore = dc.getTotaalScore();
+                if(totaalscore >=23){
+                    tileBox.getChildren().remove(tile23);
+                    dc.voegTegelToeAanSpeler(23);
+                dc.EindeBeurt();
+                aanBeurt.setText(dc.getGesorteerdeSpelerNaam(dc.getSpelerAanBeurt()));
+                }
+            });
+            tile24.setOnMouseClicked(e->{
+                int totaalscore = dc.getTotaalScore();
+                if(totaalscore >=24){
+                    tileBox.getChildren().remove(tile24);
+                    dc.voegTegelToeAanSpeler(24);
+                dc.EindeBeurt();
+                aanBeurt.setText(dc.getGesorteerdeSpelerNaam(dc.getSpelerAanBeurt()));
+                }
+            });
+            tile25.setOnMouseClicked(e->{
+                int totaalscore = dc.getTotaalScore();
+                if(totaalscore >=25){
+                    tileBox.getChildren().remove(tile25);
+                    dc.voegTegelToeAanSpeler(25);
+                dc.EindeBeurt();
+                aanBeurt.setText(dc.getGesorteerdeSpelerNaam(dc.getSpelerAanBeurt()));
+                }
+            });
+            tile26.setOnMouseClicked(e->{
+                int totaalscore = dc.getTotaalScore();
+                if(totaalscore >=26){
+                    tileBox.getChildren().remove(tile26);
+                    dc.voegTegelToeAanSpeler(26);
+                dc.EindeBeurt();
+                aanBeurt.setText(dc.getGesorteerdeSpelerNaam(dc.getSpelerAanBeurt()));
+                }
+            });
+            tile27.setOnMouseClicked(e->{
+                int totaalscore = dc.getTotaalScore();
+                if(totaalscore >=27){
+                    tileBox.getChildren().remove(tile27);
+                    dc.voegTegelToeAanSpeler(27);
+                dc.EindeBeurt();
+                aanBeurt.setText(dc.getGesorteerdeSpelerNaam(dc.getSpelerAanBeurt()));
+                }
+            });
+            tile28.setOnMouseClicked(e->{
+                int totaalscore = dc.getTotaalScore();
+                if(totaalscore >=21){
+                    tileBox.getChildren().remove(tile28);
+                    dc.voegTegelToeAanSpeler(28);
+                dc.EindeBeurt();
+                aanBeurt.setText(dc.getGesorteerdeSpelerNaam(dc.getSpelerAanBeurt()));
+                }
+            });
+            tile29.setOnMouseClicked(e->{
+                int totaalscore = dc.getTotaalScore();
+                if(totaalscore >=29){
+                    tileBox.getChildren().remove(tile29);
+                    dc.voegTegelToeAanSpeler(29);
+                dc.EindeBeurt();
+                aanBeurt.setText(dc.getGesorteerdeSpelerNaam(dc.getSpelerAanBeurt()));
+                }
+            });
+            tile30.setOnMouseClicked(e->{
+                int totaalscore = dc.getTotaalScore();
+                if(totaalscore >=30){
+                    tileBox.getChildren().remove(tile30);
+                    dc.voegTegelToeAanSpeler(30);
+                dc.EindeBeurt();
+                aanBeurt.setText(dc.getGesorteerdeSpelerNaam(dc.getSpelerAanBeurt()));
+                }
+            });
+            tile31.setOnMouseClicked(e->{
+                int totaalscore = dc.getTotaalScore();
+                if(totaalscore >=31){
+                    tileBox.getChildren().remove(tile31);
+                    dc.voegTegelToeAanSpeler(31);
+                dc.EindeBeurt();
+                aanBeurt.setText(dc.getGesorteerdeSpelerNaam(dc.getSpelerAanBeurt()));
+                }
+            });
+            tile32.setOnMouseClicked(e->{
+                int totaalscore = dc.getTotaalScore();
+                if(totaalscore >=32){
+                    tileBox.getChildren().remove(tile32);
+                    dc.voegTegelToeAanSpeler(32);
+                dc.EindeBeurt();
+                aanBeurt.setText(dc.getGesorteerdeSpelerNaam(dc.getSpelerAanBeurt()));
+                }
+            });
+            tile33.setOnMouseClicked(e->{
+                int totaalscore = dc.getTotaalScore();
+                if(totaalscore >=33){
+                    tileBox.getChildren().remove(tile33);
+                    dc.voegTegelToeAanSpeler(33);
+                dc.EindeBeurt();
+                aanBeurt.setText(dc.getGesorteerdeSpelerNaam(dc.getSpelerAanBeurt()));
+                }
+            });
+            tile34.setOnMouseClicked(e->{
+                int totaalscore = dc.getTotaalScore();
+                if(totaalscore >=34){
+                    tileBox.getChildren().remove(tile34);
+                    dc.voegTegelToeAanSpeler(34);
+                dc.EindeBeurt();
+                aanBeurt.setText(dc.getGesorteerdeSpelerNaam(dc.getSpelerAanBeurt()));
+                }
+            });
+            tile35.setOnMouseClicked(e->{
+                int totaalscore = dc.getTotaalScore();
+                if(totaalscore >=35){
+                    tileBox.getChildren().remove(tile35);
+                    dc.voegTegelToeAanSpeler(35);
+                dc.EindeBeurt();
+                aanBeurt.setText(dc.getGesorteerdeSpelerNaam(dc.getSpelerAanBeurt()));
+                }
+            });
+            tile36.setOnMouseClicked(e->{
+                int totaalscore = dc.getTotaalScore();
+                if(totaalscore >=36){
+                    tileBox.getChildren().remove(tile36);
+                    dc.voegTegelToeAanSpeler(36);
+                dc.EindeBeurt();
+                aanBeurt.setText(dc.getGesorteerdeSpelerNaam(dc.getSpelerAanBeurt()));
+                }
+            });
+            
+            
             
             //effective spel
             

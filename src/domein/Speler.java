@@ -14,7 +14,6 @@ public class Speler {
     private String geroldeDobbelstenen;
     private int totaalScore;
     private boolean eindeBeurt = false;
-    private int aantalKeer = 0;
     private LocalDate geboorteDatum;
     private ArrayList gekozenTegels = new ArrayList<Integer>();
     private ArrayList dobbelstenenArrayList = new ArrayList<>();
@@ -151,13 +150,8 @@ public class Speler {
          if(gekozenGetalMatchtDobbelsteenOog){      
         if(!gekozenGetallen.contains(gekozenGetal)){
                      gekozenGetallen.add(gekozenGetal);
-                    }else{
-                        throw new IllegalArgumentException("Het gekozen getal is al is gekozen.");}}
-        
-            if (!gekozenGetalMatchtDobbelsteenOog) {
-                throw new IllegalArgumentException("Je gekozen getal matcht niet met de gerolde dobbelstenen!");
-            }
-        
+        }
+         }
         return gekozenGetalMatchtDobbelsteenOog;
     }
 
@@ -184,7 +178,7 @@ public class Speler {
     }
 
     public int berekenScore(int gekozenGetal) {
-      aantalKeer=0;
+     int aantalKeer=0;
         for (Object dobbelsteen : dobbelstenenArrayList) {
             if (dobbelsteen.equals(gekozenGetal)) {
                 aantalKeer++;
@@ -194,7 +188,8 @@ public class Speler {
         if (gekozenGetal == 6) {
             gekozenGetal = 5;
         }
-        score = aantalKeer * gekozenGetal;
+        score =  aantalKeer * gekozenGetal;
+         aantalDobbelstenen-= aantalKeer;
         return score;
     }
 
@@ -210,41 +205,9 @@ public class Speler {
         return aantalDobbelstenen;
     }
 
-    public boolean checkOfEindeBeurt(int guard, int gekozenGetal) {
-        if (aantalDobbelstenen == 0 || zijnWaardenHetzelfde()) {
-            eindeBeurt = true;
-        }
-        if (totaalScore > 21) {
-            if (guard == 1) {
-                eindeBeurt = true;
-            }
-        }
-        if (eindeBeurt) {
-            gekozenGetallen.clear();
-            aantalDobbelstenen=8;
-            totaalScore=0;
-        }
-        return eindeBeurt;
-    }
+   
     
-        public boolean zijnWaardenHetzelfde() {
-        int nietGelijkCounter = aantalDobbelstenen;
-        aantalDobbelstenen-= aantalKeer;
-        for (Object dobbelsteen : dobbelstenenArrayList) {
-            for (Object getal : gekozenGetallen) {
-                if (getal == dobbelsteen) {
-                    nietGelijkCounter--;
-                }
-            }
-        }
-
-        if (!gekozenGetallen.isEmpty()) {
-            if (nietGelijkCounter == 0) {
-                return true;
-            }
-        }
-        return false;
-    }
+       
 
     public String getWachtwoord() {
         return wachtwoord;

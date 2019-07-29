@@ -19,7 +19,7 @@ public class spelermapper {
        Class.forName ("com.mysql.jdbc.Driver");
    }
     
-   private static final String JDBC_URL = "jdbc:mysql://localhost:3306/spelers?user=Regenwormen&password=Regenwormen&serverTimezone=UTC";
+   private static final String JDBC_URL = "jdbc:mysql://localhost:3306/spelers?user=Regenwormen&password=Regenwormen&serverTimezone=UTC&useSSL=false";
     public boolean voegSpelerToe(Speler speler)
     {
         try (Connection conn = DriverManager.getConnection(JDBC_URL)) {
