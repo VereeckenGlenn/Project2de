@@ -162,8 +162,52 @@ public class RegenwormenApplicatie extends Application {
             BorderPane speelGrid = new BorderPane();
             spelerGrid.setAlignment(Pos.CENTER);
             Scene speelScene = new Scene(speelGrid, 300, 200);
-            HBox tileBox = new HBox();
+            
             HBox dobbelBox = new HBox();
+            
+            Image dobbelsteen1 = new Image("https://imgur.com/Hb1yzNy.png");
+            Image dobbelsteen2 = new Image("https://imgur.com/Hb1yzNy.png");
+            Image dobbelsteen3 = new Image("https://imgur.com/sLvt8uQ.png");
+            Image dobbelsteen4 = new Image("https://imgur.com/sLvt8uQ.png");
+            Image dobbelsteen5 = new Image("https://imgur.com/oKnxkzL.png");
+            Image dobbelsteenRegenworm = new Image("https://imgur.com/WTqfvL1.png");
+            Label aanBeurt = new Label();
+            aanBeurt.setFont(Font.font(STYLESHEET_MODENA,50));
+            Insets aanBeurtInset = new Insets(0,10,0,0);
+            aanBeurt.setPadding(aanBeurtInset);
+            Button rolDobbelstenen = new Button("rol dobbelstenen");
+            Button eindeBeurt = new Button("eindig beurt");
+            Alert dobbelAlert = new Alert(AlertType.INFORMATION);
+            dobbelAlert.setHeaderText("het geselecteerde getal is al is gekozen, probeer opniew");
+            Button naarTegels = new Button("kies tegel");
+            Label totaalScore = new Label();
+            HBox topBox = new HBox();
+            HBox bottemBox = new HBox();
+            topBox.getChildren().addAll(aanBeurt);
+            ImageView roll1 = new ImageView();
+            ImageView roll2 = new ImageView();
+            ImageView roll3 = new ImageView();
+            ImageView roll4 = new ImageView();
+            ImageView roll5 = new ImageView();
+            ImageView roll6 = new ImageView();
+            ImageView roll7 = new ImageView();
+            ImageView roll8 = new ImageView();
+            dobbelBox.getChildren().addAll(roll1,roll2,roll3,roll4,roll5,roll6,roll7,roll8);
+            bottemBox.getChildren().addAll(rolDobbelstenen,eindeBeurt,naarTegels);
+            bottemBox.setAlignment(Pos.CENTER_RIGHT);
+            speelGrid.setTop(topBox);
+            speelGrid.setRight(totaalScore);
+            speelGrid.setCenter(dobbelBox);
+            speelGrid.setBottom(bottemBox);
+            Alert eindeBeurtAlert = new Alert(AlertType.INFORMATION);
+            eindeBeurtAlert.setHeaderText("als je op ok drukt, eindig je de beurt zonder tegel.");
+            
+            
+            
+            //tegelscherm
+            BorderPane tegelPane = new BorderPane();
+            Scene tegelScene = new Scene(tegelPane,300,200);
+            HBox tileBox = new HBox();
             ImageView tile21 = new ImageView("https://imgur.com/aQNJujv.png");
             ImageView tile22 = new ImageView("https://imgur.com/cEUpShY.png");
             ImageView tile23 = new ImageView("https://imgur.com/7Zm7IWm.png");
@@ -180,31 +224,16 @@ public class RegenwormenApplicatie extends Application {
             ImageView tile34 = new ImageView("https://imgur.com/rp9NOjp.png");
             ImageView tile35 = new ImageView("https://imgur.com/ZGBhNJy.png");
             ImageView tile36 = new ImageView("https://imgur.com/ZGBhNJy.png");
-            ImageView dobbelsteen1 = new ImageView("https://imgur.com/Hb1yzNy.png");
-            ImageView dobbelsteen2 = new ImageView("https://imgur.com/Hb1yzNy.png");
-            ImageView dobbelsteen3 = new ImageView("https://imgur.com/sLvt8uQ.png");
-            ImageView dobbelsteen4 = new ImageView("https://imgur.com/sLvt8uQ.png");
-            ImageView dobbelsteen5 = new ImageView("https://imgur.com/oKnxkzL.png");
-            ImageView dobbelsteenRegenworm = new ImageView("https://imgur.com/WTqfvL1.png");
-            Label aanBeurt = new Label();
-            aanBeurt.setFont(Font.font(STYLESHEET_MODENA,50));
-            Insets aanBeurtInset = new Insets(0,10,0,0);
-            aanBeurt.setPadding(aanBeurtInset);
-            Button rolDobbelstenen = new Button("rol dobbelstenen");
-            Button eindeBeurt = new Button("eindig beurt");
-            Alert dobbelAlert = new Alert(AlertType.INFORMATION);
-            dobbelAlert.setHeaderText("het geselecteerde getal is al is gekozen, probeer opniew");
-            Label totaalScore = new Label();
-            HBox topBox = new HBox();
-            HBox bottemBox = new HBox();
-            topBox.getChildren().addAll(aanBeurt, tileBox);
-            bottemBox.getChildren().addAll(rolDobbelstenen,eindeBeurt);
-            bottemBox.setAlignment(Pos.CENTER_RIGHT);
-            speelGrid.setTop(topBox);
-            speelGrid.setRight(totaalScore);
-            speelGrid.setCenter(dobbelBox);
-            speelGrid.setBottom(bottemBox);
             tileBox.getChildren().addAll(tile21,tile22,tile23,tile24,tile25,tile26,tile27,tile28,tile29,tile30,tile31,tile32,tile33,tile34,tile35,tile36);
+            ImageView tile1 = new ImageView();
+            ImageView tile2 = new ImageView();
+            ImageView tile3 = new ImageView();
+            ImageView tile4 = new ImageView();
+            ImageView tile5 = new ImageView();
+            ImageView tile6 = new ImageView();
+            ImageView tile7 = new ImageView();
+            ImageView tile8 = new ImageView();
+            
             
             confirm.setOnMouseClicked(e -> {
                 int count = dc.getAantalSpelers();
@@ -235,24 +264,119 @@ public class RegenwormenApplicatie extends Application {
                 window.setScene(speelScene);
                     });
             eindeBeurt.setOnMouseClicked(e -> {
-                dc.EindeBeurt();
-                aanBeurt.setText(dc.getGesorteerdeSpelerNaam(dc.getSpelerAanBeurt()));
+                   eindeBeurtAlert.showAndWait().ifPresent(response -> {
+                       if (response == ButtonType.OK) {
+                           dc.EindeBeurt();
+                           aanBeurt.setText(dc.getGesorteerdeSpelerNaam(dc.getSpelerAanBeurt()));
+                             }
+                        });
                     });    
+            
             rolDobbelstenen.setOnMouseClicked(e->{
                 dc.stelDobbelstenenArrayIn();
                 ArrayList dobbelstenen = dc.getDobbelstenen();
-                for (Object dobbelsteen : dobbelstenen) {
-                 int d = (int) dobbelsteen;
-                 switch(d){
-                     case 1: dobbelBox.getChildren().addAll(dobbelsteen1); break;
-                     case 2: dobbelBox.getChildren().addAll(dobbelsteen2); break;
-                     case 3: dobbelBox.getChildren().addAll(dobbelsteen3); break;
-                     case 4: dobbelBox.getChildren().addAll(dobbelsteen4); break;
-                     case 5: dobbelBox.getChildren().addAll(dobbelsteen5); break;
-                     default: dobbelBox.getChildren().addAll(dobbelsteenRegenworm); break;
+                 int aantalDobbelstenen = dobbelstenen.size();
+                 while(aantalDobbelstenen>0){
+                 if(aantalDobbelstenen == 8){
+                     int d = (int) dobbelstenen.get(7);
+                      switch(d){
+                     case 1: roll8.setImage(dobbelsteen1); break;
+                     case 2: roll8.setImage(dobbelsteen2); break;
+                     case 3: roll8.setImage(dobbelsteen3); break;
+                     case 4: roll8.setImage(dobbelsteen4); break;
+                     case 5: roll8.setImage(dobbelsteen5); break;
+                     default: roll8.setImage(dobbelsteenRegenworm); break;
                  }
-            }
-            });        
+                      aantalDobbelstenen--;
+                      
+                  }  
+                if(aantalDobbelstenen == 7){
+                     int d = (int) dobbelstenen.get(6);
+                      switch(d){
+                     case 1: roll7.setImage(dobbelsteen1); break;
+                     case 2: roll7.setImage(dobbelsteen2); break;
+                     case 3: roll7.setImage(dobbelsteen3); break;
+                     case 4: roll7.setImage(dobbelsteen4); break;
+                     case 5: roll7.setImage(dobbelsteen5); break;
+                     default: roll7.setImage(dobbelsteenRegenworm); break;
+                 }
+                      aantalDobbelstenen--;
+                  }  
+                if(aantalDobbelstenen == 6){
+                     int d = (int) dobbelstenen.get(5);
+                      switch(d){
+                     case 1: roll6.setImage(dobbelsteen1); break;
+                     case 2: roll6.setImage(dobbelsteen2); break;
+                     case 3: roll6.setImage(dobbelsteen3); break;
+                     case 4: roll6.setImage(dobbelsteen4); break;
+                     case 5: roll6.setImage(dobbelsteen5); break;
+                     default: roll6.setImage(dobbelsteenRegenworm); break;
+                 }
+                      aantalDobbelstenen--;
+                  } 
+                 if(aantalDobbelstenen == 5){
+                     int d = (int) dobbelstenen.get(4);
+                      switch(d){
+                     case 1: roll5.setImage(dobbelsteen1); break;
+                     case 2: roll5.setImage(dobbelsteen2); break;
+                     case 3: roll5.setImage(dobbelsteen3); break;
+                     case 4: roll5.setImage(dobbelsteen4); break;
+                     case 5: roll5.setImage(dobbelsteen5); break;
+                     default: roll5.setImage(dobbelsteenRegenworm); break;
+                 }
+                      aantalDobbelstenen--;
+                  } 
+                 if(aantalDobbelstenen == 4){
+                     int d = (int) dobbelstenen.get(3);
+                      switch(d){
+                     case 1: roll4.setImage(dobbelsteen1); break;
+                     case 2: roll4.setImage(dobbelsteen2); break;
+                     case 3: roll4.setImage(dobbelsteen3); break;
+                     case 4: roll4.setImage(dobbelsteen4); break;
+                     case 5: roll4.setImage(dobbelsteen5); break;
+                     default: roll4.setImage(dobbelsteenRegenworm); break;
+                 }
+                      aantalDobbelstenen--;
+                  } 
+                 if(aantalDobbelstenen == 3){
+                     int d = (int) dobbelstenen.get(2);
+                      switch(d){
+                     case 1: roll3.setImage(dobbelsteen1); break;
+                     case 2: roll3.setImage(dobbelsteen2); break;
+                     case 3: roll3.setImage(dobbelsteen3); break;
+                     case 4: roll3.setImage(dobbelsteen4); break;
+                     case 5: roll3.setImage(dobbelsteen5); break;
+                     default: roll3.setImage(dobbelsteenRegenworm); break;
+                 }
+                      aantalDobbelstenen--;
+                  } 
+                 if(aantalDobbelstenen == 2){
+                     int d = (int) dobbelstenen.get(1);
+                      switch(d){
+                     case 1: roll2.setImage(dobbelsteen1); break;
+                     case 2: roll2.setImage(dobbelsteen2); break;
+                     case 3: roll2.setImage(dobbelsteen3); break;
+                     case 4: roll2.setImage(dobbelsteen4); break;
+                     case 5: roll2.setImage(dobbelsteen5); break;
+                     default: roll2.setImage(dobbelsteenRegenworm); break;
+                 }
+                      aantalDobbelstenen--;
+                  } 
+                 if(aantalDobbelstenen == 1){
+                     int d = (int) dobbelstenen.get(0);
+                      switch(d){
+                     case 1: roll1.setImage(dobbelsteen1); break;
+                     case 2: roll1.setImage(dobbelsteen2); break;
+                     case 3: roll1.setImage(dobbelsteen3); break;
+                     case 4: roll1.setImage(dobbelsteen4); break;
+                     case 5: roll1.setImage(dobbelsteen5); break;
+                     default: roll1.setImage(dobbelsteenRegenworm); break;
+                 }
+                      aantalDobbelstenen--;
+                  } 
+                 }
+                 });       
+            
             dobbelsteen1.setOnMouseClicked(e->{
               if(dc.vergelijkGekozenGetalMetArrayDobbelstenen(1)){
               dc.voegScoreSpelerToeAanTotaalScore(dc.berekenScore(1)); 
@@ -271,7 +395,7 @@ public class RegenwormenApplicatie extends Application {
                     dobbelAlert.show();                        
               }
             });
-            dobbelsteen3.setOnMouseClicked(e->{
+            dobbeelsteen3.setOnMouseClicked(e->{
               if(dc.vergelijkGekozenGetalMetArrayDobbelstenen(3)){
               dc.voegScoreSpelerToeAanTotaalScore(dc.berekenScore(3)); 
               totaalScore.setText(String.format("%d",dc.getTotaalScore()));
@@ -298,7 +422,7 @@ public class RegenwormenApplicatie extends Application {
                     dobbelAlert.show();                        
               }
             });
-            dobbelsteenRegenworm.setOnMouseClicked(e->{
+            dobbelsteen6.setOnMouseClicked(e->{
               if(dc.vergelijkGekozenGetalMetArrayDobbelstenen(6)){
               dc.voegScoreSpelerToeAanTotaalScore(dc.berekenScore(6)); 
               totaalScore.setText(String.format("%d",dc.getTotaalScore()));
