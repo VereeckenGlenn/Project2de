@@ -11,6 +11,8 @@ import java.util.List;
 import domein.*;
 import java.time.LocalDate;
 import java.time.ZoneId;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class spelermapper {
 
@@ -129,28 +131,38 @@ public class spelermapper {
      * Verwijdert de opgegeven gebruiker uit de databank.
      * De returnwaarde geeft aan of de bewerking geslaagd is.
      */
-    public boolean verwijderGebruiker(Speler gebruiker)
-    {
-        return verwijderGebruiker(gebruiker.getNaam());
-    }
+    
 
     /*
      * Verwijdert de gebruiker met de opgegeven gebruikersnaam uit de databank.
      * De returnwaarde geeft aan of de bewerking geslaagd is.
      */
-    public boolean verwijderGebruiker(String gebruikersnaam)
-    {
-        try (Connection conn = DriverManager.getConnection(JDBC_URL)) {
-            PreparedStatement queryVerwijderGebruiker = conn.prepareStatement("DELETE FROM spelerlijst WHERE naam = ?");
-            queryVerwijderGebruiker.setString(1, gebruikersnaam);
-            queryVerwijderGebruiker.executeUpdate();
-            return true;
+
+    public boolean voegHighScoreToeAanSpeler(String naam, int highscore){
+   try (Connection conn = DriverManager.getConnection(JDBC_URL)) {
+            PreparedStatement queryHighScoreSpeler = conn.prepareStatement("SELECT highscore FROM spelerlijst WHERE naam = ?");
+             queryHighScoreSpeler.setString(1, naam);
+            try (ResultSet rs = queryHighScoreSpeler.executeQuery()) {
+                if (rs.next()) { // Als er een resultaat gevonden is.
+                   if(rs.getInt("highscore")==highscore){
+            PreparedStatement queryVeranderHighScoreSpeler = conn.prepareStatement("UPDATE highScore SET ? WHERE naam = ?");
+            queryVeranderHighScoreSpeler.setInt(1,highscore);
+            queryVeranderHighScoreSpeler.setString(2, naam);
+            queryVeranderHighScoreSpeler.executeUpdate();
+                   }
+                }
         } catch (SQLException ex) {
             for (Throwable t : ex) {
                 t.printStackTrace();
             }
             return false;
         }
-    }
-   
+}      catch (SQLException ex) {
+           for (Throwable t : ex){
+               t.printStackTrace();
+               return false;
+           }
+       }
+   return true;
+}
 }

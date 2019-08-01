@@ -4,7 +4,7 @@ package main;
 import gui.RegenwormenApplicatie;
 import javafx.application.Application;
 import javafx.stage.Stage;
-import ui.Regenworm;
+
 
 
 public class StartUp{

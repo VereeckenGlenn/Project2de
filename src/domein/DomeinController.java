@@ -25,6 +25,7 @@ public class DomeinController {
     List<String> spelerNamen = new ArrayList<>();
     private int spelerAanBeurt = 0;
     
+    
     public boolean ControleerSpelerNaamEnWachtwoord(String naam, String ww){
         boolean returnwaarde = false;
         Speler s = sm.zoekSpeler(naam);
@@ -140,16 +141,18 @@ public class DomeinController {
         int j = leeftijden.length; 
         for (int i = 0; i < leeftijden.length; i++) { 
             leeftijdenReverse[j - 1] = leeftijden[i]; 
-            j = j - 1; 
-                for (Object speler : spelerLijst) {
-                Speler s = (Speler) speler;
-                int k = 0;
-                if (leeftijdenReverse[k] == s.berekenLeeftijd(s.getGeboorteDatum(), huidigeDatum)) {
-                    gesorteerdeSpelerLijst.add(s);
-                    k++;
-                }
-            }
+                 j = j - 1;
         }
+        for (Object s : spelerLijst) {
+            Speler p = (Speler) s;
+        for (int i : leeftijdenReverse) {
+           if(p.berekenLeeftijd(p.getGeboorteDatum(), huidigeDatum)==i){
+               gesorteerdeSpelerLijst.add(p);
+           }
+        
+        }
+           }     
+        
     }
     public ArrayList getDobbelstenen(){
         return speler.getDobbelstenenArray();
@@ -157,6 +160,35 @@ public class DomeinController {
 
     public ArrayList getGesorteerdeSpelerLijst() {
         return gesorteerdeSpelerLijst;
+    }
+    public String getNaamVanHoogsteScore(){
+        ArrayList hoogsteScore = new ArrayList();
+       ArrayList gesorteerd = getGesorteerdeSpelerLijst();
+        for (Object s : gesorteerd) {
+            Speler p = (Speler) s;
+            hoogsteScore.add(p.getTotaalScore());
+        }
+        for (int i = hoogsteScore.size() - 1; i >= 1; i--) {
+            int positie = i;
+            int max = (int) hoogsteScore.get(i);
+            for (int j = i - 1; i > 0; i--) {
+                if ((int) hoogsteScore.get(j) > max) {
+                    positie = j;
+                    max = (int) hoogsteScore.get(j);
+                }
+            }
+            hoogsteScore.set(positie, hoogsteScore.get(i));
+            hoogsteScore.set(i,max);           
+        } 
+        String naam ="";
+        int highscore = (int) hoogsteScore.get(0);
+        for (Object s : gesorteerd) {
+            Speler p = (Speler) s;
+            if(p.getTotaalScore()==highscore){
+                naam = p.getNaam();
+            }
+        }
+        return String.format("%s wint met een score van %d",naam,highscore);
     }
     
     public String getGesorteerdeSpelerNaam(int nummer){
@@ -251,15 +283,23 @@ public class DomeinController {
     }
     
     public void EindeBeurt(){
-        if(spelerAanBeurt==7){
+        if(spelerAanBeurt==aantalSpelers-1){
             spelerAanBeurt = 0;
         }else{
            spelerAanBeurt++;
         }
         
     }
-
- 
+    public ArrayList getTegelArrayListVanSpeler(int speler){
+            Object s = gesorteerdeSpelerLijst.get(speler);
+            Speler p = (Speler) s;
+        return p.getGekozenTegels();
+        
+    }
+    
+  public ArrayList getTegelArrayList() {
+       return speler.getTegelArrayList();
+    }
    
     public boolean vergelijkGekozenGetalMetArrayDobbelstenen(int gekozenGetal) {
         return speler.vergelijkGekozenGetalMetArrayDobbelstenen(gekozenGetal);
@@ -277,11 +317,18 @@ public class DomeinController {
         }
         return false;
     }
+    public void verwijderTegelVanSpeler(int speler, int tegel){
+        Speler s = (Speler) gesorteerdeSpelerLijst.get(speler);
+        s.verwijderTegelVanSpeler(tegel);
+    }
 
     public int getSpelerAanBeurt() {
         return spelerAanBeurt;
     }
     public void voegTegelToeAanSpeler(int tegel){
         speler.voegTegelToeAanSpeler(tegel);
+    }
+    public void pasHighscoreAan(String naam, int highscore){
+        sm.voegHighScoreToeAanSpeler(naam, highscore);
     }
 }

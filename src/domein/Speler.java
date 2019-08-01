@@ -139,19 +139,17 @@ public class Speler {
     }
 
     public boolean vergelijkGekozenGetalMetArrayDobbelstenen(int gekozenGetal) {
-        boolean gekozenGetalMatchtDobbelsteenOog = false;
-        while (!gekozenGetalMatchtDobbelsteenOog) {
-            for (Object dobbelsteen : dobbelstenenArrayList) {
-                if (dobbelsteen.equals(gekozenGetal)) {
-                   gekozenGetalMatchtDobbelsteenOog = true;}
-                    }
-                
-            } 
-         if(gekozenGetalMatchtDobbelsteenOog){      
-        if(!gekozenGetallen.contains(gekozenGetal)){
-                     gekozenGetallen.add(gekozenGetal);
+        boolean gekozenGetalMatchtDobbelsteenOog = true;
+           for (Object getallen : gekozenGetallen) {
+            int getal = (int) getallen;
+            if(getal == gekozenGetal){
+                gekozenGetalMatchtDobbelsteenOog = false;
+            }
         }
-         }
+          
+               
+       gekozenGetallen.add(gekozenGetal);
+           
         return gekozenGetalMatchtDobbelsteenOog;
     }
 
@@ -203,6 +201,14 @@ public class Speler {
 
     public int getAantalDobbelstenen() {
         return aantalDobbelstenen;
+    }
+
+    public ArrayList getGekozenTegels() {
+        return gekozenTegels;
+    }
+
+    public ArrayList getTegelArrayList() {
+        return tegelArrayList;
     }
 
    
