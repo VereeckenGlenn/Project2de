@@ -144,7 +144,7 @@ public class spelermapper {
              queryHighScoreSpeler.setString(1, naam);
             try (ResultSet rs = queryHighScoreSpeler.executeQuery()) {
                 if (rs.next()) { // Als er een resultaat gevonden is.
-                   if(rs.getInt("highscore")==highscore){
+                   if(rs.getInt("highscore")<highscore){
             PreparedStatement queryVeranderHighScoreSpeler = conn.prepareStatement("UPDATE highScore SET ? WHERE naam = ?");
             queryVeranderHighScoreSpeler.setInt(1,highscore);
             queryVeranderHighScoreSpeler.setString(2, naam);
@@ -164,5 +164,25 @@ public class spelermapper {
            }
        }
    return true;
+}
+     public ArrayList getHighscores(){
+        ArrayList highscores = new ArrayList();
+   try (Connection conn = DriverManager.getConnection(JDBC_URL)) {
+            PreparedStatement queryHighscores = conn.prepareStatement("SELECT naam, highscore FROM spelerinfo ORDER BY highscore;");
+            try (ResultSet rs = queryHighscores.executeQuery()) {
+                while (rs.next()) { // Als er een resultaat gevonden is.
+                  String record = "";
+                  String naam = rs.getString("naam");
+                  int score = rs.getInt("highscore");
+                  record = String.format("%s - %d",naam,score);
+                  highscores.add(record);
+               }
+            }
+}      catch (SQLException ex) {
+           for (Throwable t : ex){
+               t.printStackTrace();
+           }
+       }
+   return highscores;
 }
 }

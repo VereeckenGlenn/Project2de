@@ -125,34 +125,36 @@ public class DomeinController {
             leeftijden[x] = s.berekenLeeftijd(s.getGeboorteDatum(), huidigeDatum);
             x++;
         }
-        for (int i = leeftijden.length - 1; i >= 1; i--) {
-            int positie = i;
-            int max = leeftijden[i];
-            for (int j = i - 1; i > 0; i--) {
-                if (leeftijden[j] > max) {
-                    positie = j;
-                    max = leeftijden[j];
-                }
+        int jongsteLeeftijd = 99999;
+        for (int i : leeftijden) {
+            if(i<jongsteLeeftijd){
+                jongsteLeeftijd = i;
             }
-            leeftijden[positie] = leeftijden[i];
-            leeftijden[i] = max;           
-        } 
-        int[] leeftijdenReverse = new int[leeftijden.length];
-        int j = leeftijden.length; 
-        for (int i = 0; i < leeftijden.length; i++) { 
-            leeftijdenReverse[j - 1] = leeftijden[i]; 
-                 j = j - 1;
         }
+       int jongste = 0;
         for (Object s : spelerLijst) {
             Speler p = (Speler) s;
-        for (int i : leeftijdenReverse) {
-           if(p.berekenLeeftijd(p.getGeboorteDatum(), huidigeDatum)==i){
+           if(p.berekenLeeftijd(p.getGeboorteDatum(), huidigeDatum)==jongsteLeeftijd){
                gesorteerdeSpelerLijst.add(p);
+              jongste = spelerLijst.indexOf(p);
            }
-        
         }
-           }     
-        
+        spelerLijst.remove(jongste);
+         for (Object s : spelerLijst) {
+            Speler p = (Speler) s;
+            gesorteerdeSpelerLijst.add(p);
+        }
+    }
+    public String getHighScores(){
+        StringBuilder sb = new StringBuilder();
+        for (Object string : sm.getHighscores())
+        {
+            String s = (String) string;
+           sb.append(s);
+           sb.append("\n");
+            } 
+        String returnstring = sb.toString();
+         return returnstring;
     }
     public ArrayList getDobbelstenen(){
         return speler.getDobbelstenenArray();
@@ -162,33 +164,29 @@ public class DomeinController {
         return gesorteerdeSpelerLijst;
     }
     public String getNaamVanHoogsteScore(){
-        ArrayList hoogsteScore = new ArrayList();
+        ArrayList scoreList = new ArrayList();
        ArrayList gesorteerd = getGesorteerdeSpelerLijst();
         for (Object s : gesorteerd) {
             Speler p = (Speler) s;
-            hoogsteScore.add(p.getTotaalScore());
+            scoreList.add(p.getTotaalScore());
         }
-        for (int i = hoogsteScore.size() - 1; i >= 1; i--) {
-            int positie = i;
-            int max = (int) hoogsteScore.get(i);
-            for (int j = i - 1; i > 0; i--) {
-                if ((int) hoogsteScore.get(j) > max) {
-                    positie = j;
-                    max = (int) hoogsteScore.get(j);
-                }
-            }
-            hoogsteScore.set(positie, hoogsteScore.get(i));
-            hoogsteScore.set(i,max);           
-        } 
+        int hoogsteScore = 0;
+        for (Object object : scoreList) {
+           int i = (int) object;
+           if(i>hoogsteScore){
+               hoogsteScore = i;
+           }
+               
+        }
+        
         String naam ="";
-        int highscore = (int) hoogsteScore.get(0);
         for (Object s : gesorteerd) {
             Speler p = (Speler) s;
-            if(p.getTotaalScore()==highscore){
+            if(p.getTotaalScore()==hoogsteScore){
                 naam = p.getNaam();
             }
         }
-        return String.format("%s wint met een score van %d",naam,highscore);
+        return String.format("%s wint met een score van %d",naam,hoogsteScore);
     }
     
     public String getGesorteerdeSpelerNaam(int nummer){

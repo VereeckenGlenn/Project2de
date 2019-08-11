@@ -86,6 +86,7 @@ public class Speler {
     }
     public void voegTegelToeAanSpeler(int tegel){
         gekozenTegels.add(tegel);
+        aantalDobbelstenen = 8;
     }
     public int ToonBovensteTegel(){
         if(!gekozenTegels.isEmpty()){
