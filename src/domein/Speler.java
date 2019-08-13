@@ -43,7 +43,11 @@ public class Speler {
         }
 
     }
-
+      
+    public void reset(){
+        aantalDobbelstenen = 8;
+        gekozenGetallen.clear();
+    }
     public int getHighscore() {
         return highscore;
     }
@@ -87,6 +91,7 @@ public class Speler {
     public void voegTegelToeAanSpeler(int tegel){
         gekozenTegels.add(tegel);
         aantalDobbelstenen = 8;
+        gekozenGetallen.clear();
     }
     public int ToonBovensteTegel(){
         if(!gekozenTegels.isEmpty()){

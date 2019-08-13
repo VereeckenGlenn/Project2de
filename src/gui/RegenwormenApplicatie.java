@@ -30,9 +30,9 @@ public class RegenwormenApplicatie extends Application {
     DomeinController dc;
     Stage window;
     ImageView dobbelsteen1 = new ImageView("https://imgur.com/Hb1yzNy.png");
-    ImageView dobbelsteen2 = new ImageView("https://imgur.com/Hb1yzNy.png");
+    ImageView dobbelsteen2 = new ImageView("https://imgur.com/wuVK2jZ.png");
     ImageView dobbelsteen3 = new ImageView("https://imgur.com/sLvt8uQ.png");
-    ImageView dobbelsteen4 = new ImageView("https://imgur.com/sLvt8uQ.png");
+    ImageView dobbelsteen4 = new ImageView("https://imgur.com/1fin2h7.png");
     ImageView dobbelsteen5 = new ImageView("https://imgur.com/oKnxkzL.png");
     ImageView dobbelsteenRegenworm = new ImageView("https://imgur.com/WTqfvL1.png");
     HBox dobbelBox = new HBox();
@@ -146,14 +146,14 @@ public class RegenwormenApplicatie extends Application {
         Button spelerButton = new Button("Spelers");
         Button highScoreButton = new Button("highscores");
         VBox welkomBox = new VBox();
-        welkomBox.getChildren().addAll(welkomLabel, startButton, spelerButton,highScoreButton);
+        welkomBox.getChildren().addAll(welkomLabel, startButton, spelerButton, highScoreButton);
 
         startGrid.getChildren().addAll(welkomBox);
         welkomBox.setAlignment(Pos.CENTER);
         Scene startScene = new Scene(startGrid, 300, 200);
         window.setScene(startScene);
         window.show();
-        
+
         //highScoreScherm
         BorderPane scorePane = new BorderPane();
         Scene highScoreScene = new Scene(scorePane, 300, 200);
@@ -168,8 +168,7 @@ public class RegenwormenApplicatie extends Application {
         topsBox.setAlignment(Pos.CENTER);
         scorePane.setTop(topsBox);
         scorePane.setCenter(centerBox);
-               
-        
+
         //spelerScherm
         GridPane spelerGrid = new GridPane();
         spelerGrid.setAlignment(Pos.CENTER);
@@ -385,8 +384,11 @@ public class RegenwormenApplicatie extends Application {
         eindeBeurt.setOnMouseClicked(e -> {
             Optional<ButtonType> result = eindeBeurtAlert.showAndWait();
             if (result.get() == ButtonType.OK) {
+                 totaalScore.setText("");
+                 dc.reset();
                 dc.EindeBeurt();
                 aanBeurt.setText(dc.getGesorteerdeSpelerNaam(dc.getSpelerAanBeurt()));
+                window.setScene(speelScene);
             }
         });
         rolDobbelstenen.setOnMouseClicked(e -> {
@@ -396,6 +398,7 @@ public class RegenwormenApplicatie extends Application {
 
         naarTegels.setOnMouseClicked(e -> {
             if (dc.getTotaalScore() > 21) {
+                    totaalScore.setText("");
                 for (int i = 0; i < dc.getAantalSpelers(); i++) {
                     if (i == 0) {
                         tspeler1.setText(dc.getGesorteerdeSpelerNaam(0));

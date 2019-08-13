@@ -38,6 +38,9 @@ public class DomeinController {
         
         return returnwaarde;
     }
+    public void reset(){
+        speler.reset();
+    }
   
     public DomeinController() throws ClassNotFoundException {
         this.speler = new Speler();
